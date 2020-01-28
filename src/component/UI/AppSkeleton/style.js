@@ -24,6 +24,14 @@ const style = makeStyles(theme => ({
             display: 'none',
         },
     },
+    appBarButton: {
+        borderRadius: 0,
+        padding: '8px',
+        margin: '0 5px'
+    },
+    appBarLink: {
+        display: 'inherit',
+    },
     toolbar: theme.mixins.toolbar,
     drawerPaper: {
         width: drawerWidth,
@@ -32,6 +40,16 @@ const style = makeStyles(theme => ({
     content: {
         flexGrow: 1,
         padding: theme.spacing(3),
+    },
+    active: {
+        background: 'white',
+        boxShadow: theme.shadows[10],
+        fontWeight: '600',
+        transition: '.2s all',
+        "&:hover": {
+            background: 'white !important',
+            boxShadow: theme.shadows[12],
+        }
     },
 }));
 

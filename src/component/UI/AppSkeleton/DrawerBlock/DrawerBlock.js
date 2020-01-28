@@ -14,7 +14,6 @@ const DrawerBlock = (props) => {
                 <Drawer
                     container={container}
                     variant='temporary'
-                    anchor='right'
                     open={props.isMobile}
                     onClose={props.handleDrawerToggle}
                     classes={{

@@ -1,8 +1,11 @@
 import React from 'react';
-import { AppBar, IconButton, Toolbar, Typography } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
+import { AppBar, Toolbar } from '@material-ui/core';
+import LoginIcon from '@material-ui/icons/ExitToApp';
+import MailIcon from '@material-ui/icons/MailOutline';
 
 import useStyle from '../style';
+import AppBarLink from './AppBarLink/AppBarLink';
+import DrawerButton from './DrawerButton/DrawerButton';
 
 const AppBarBlock = (props) => {
     const classes = useStyle();
@@ -10,16 +13,11 @@ const AppBarBlock = (props) => {
     return (
         <AppBar position="fixed" className={classes.appBar} color={'inherit'}>
             <Toolbar>
-                <IconButton
-                    color="inherit"
-                    aria-label="open drawer"
-                    edge="start"
-                    onClick={props.handleDrawerToggle}
-                    className={classes.menuButton}
-                >
-                    <MenuIcon />
-                </IconButton>
-                <Typography variant="h6" noWrap>Some text</Typography>
+                <DrawerButton handleDrawerToggle={props.handleDrawerToggle} />
+                <div style={{ marginLeft: 'auto' }}>
+                    <AppBarLink text='Contact us' icon={<MailIcon />} link='us/contact-us' />
+                    <AppBarLink text='Log in' icon={<LoginIcon />} link='/sign-in' />
+                </div>
             </Toolbar>
         </AppBar>
     )

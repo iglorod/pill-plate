@@ -1,36 +1,37 @@
 import React from 'react';
-import { Divider, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import { Divider, List } from '@material-ui/core';
+import LinkRoundedIcon from '@material-ui/icons/LinkRounded';
+import NoteRoundedIcon from '@material-ui/icons/NoteRounded';
+import PhotoCameraRoundedIcon from '@material-ui/icons/PhotoCameraRounded';
+import DescriptionRoundedIcon from '@material-ui/icons/DescriptionRounded';
+import SubjectRoundedIcon from '@material-ui/icons/SubjectRounded';
+import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
 
-import useStyle from '../../style';
-import ProjectIcon from '../../../../../assets/images/logo.png';
+import DrawerLogo from './DrawerLogo/DrawerLogo';
+import DrawerItem from './DrawerItem/DrawerItem';
 
 const DriwerItems = () => {
-    const classes = useStyle();
-
     return (
         <div>
-            <div className={classes.toolbar}>
-                <img src={ProjectIcon} alt='ICON' width='100%' />
-            </div>
-            <Divider />
+            <DrawerLogo />
+
             <List>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                    <ListItem button key={text}>
-                        <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                        <ListItemText primary={text} />
-                    </ListItem>
-                ))}
+                <DrawerItem text='Topics' to={'/us/topics'} icon={<SubjectRoundedIcon />} />
             </List>
+
             <Divider />
+
             <List>
-                {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                    <ListItem button key={text}>
-                        <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                        <ListItemText primary={text} />
-                    </ListItem>
-                ))}
+                <DrawerItem text='Links' to={'/us/links'} icon={<LinkRoundedIcon />} />
+                <DrawerItem text='Photos' to={'/us/photos'} icon={<PhotoCameraRoundedIcon />} />
+                <DrawerItem text='Files' to={'/us/files'} icon={<DescriptionRoundedIcon />} />
+                <DrawerItem text='Notes' to={'/us/notes'} icon={<NoteRoundedIcon />} />
+            </List>
+
+            <Divider />
+
+            <List>
+                <DrawerItem text='Draft' to={'/us/draft'} icon={<DeleteRoundedIcon />} />
             </List>
         </div>
     )
