@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
-import AppSceleton from '../UI/AppSkeleton/AppSceleton';
+import AppSceleton from '../AppSkeleton/AppSceleton';
 import SignIn from '../Authorization/SignIn/SignIn';
 import SignUp from '../Authorization/SignUp/SignUp';
 

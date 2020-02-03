@@ -3,16 +3,22 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import yellow from '@material-ui/core/colors/yellow';
-import amber from '@material-ui/core/colors/amber';
 import deepOrange from '@material-ui/core/colors/deepOrange';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+
+import authReducer from './store/reducers/authorization';
+
+const reducers = combineReducers({
+    auth: authReducer,
+})
 
 const theme = createMuiTheme({
     palette: {
         primary: {
-            main: yellow[400],
-            dark: amber[600]
+            main: '#FFE66D'
         },
         secondary: {
             main: deepOrange[400]
@@ -20,9 +26,13 @@ const theme = createMuiTheme({
     }
 });
 
+const store = createStore(reducers, applyMiddleware(thunk));
+
 ReactDOM.render(
     <MuiThemeProvider theme={theme}>
-        <App />
+        <Provider store={store}>
+            <App />
+        </Provider>
     </MuiThemeProvider>,
     document.getElementById('root'));
 

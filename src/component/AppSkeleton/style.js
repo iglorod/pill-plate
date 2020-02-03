@@ -36,6 +36,8 @@ const style = makeStyles(theme => ({
     drawerPaper: {
         width: drawerWidth,
         background: theme.palette.primary.main,
+        border: 'none',
+        boxShadow: theme.shadows[3]
     },
     content: {
         flexGrow: 1,
@@ -43,7 +45,7 @@ const style = makeStyles(theme => ({
     },
     active: {
         background: 'white',
-        boxShadow: theme.shadows[10],
+        boxShadow: theme.shadows[3],
         fontWeight: '600',
         transition: '.2s all',
         "&:hover": {
