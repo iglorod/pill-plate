@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Button, Typography, Link, TextField } from '@material-ui/core';
-import { connect } from 'react-redux';
 import axios from 'axios';
+import { Grid, Button, Typography, Link, TextField, CircularProgress } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import useStyles from '../../styles';
 import { signUpAction } from '../../../../store/actions/authorization';
 import { validation } from '../../../../utility/validation';
+import { ReactLink } from '../../../UI/Link/Link';
+import { finishLoadingActionCreator } from '../../../../store/actions/authorization';
 
 const SignUpForm = (props) => {
     const classes = useStyles();
@@ -86,7 +90,11 @@ const SignUpForm = (props) => {
 
         }, 800);
         setEmailTimeoutId(timeoutId);
-    }, [stateInputs.email.value])
+    }, [stateInputs.email.value]);
+
+    useEffect(() => {
+        props.finishLoading();
+    }, [])
 
     const signUpHandler = (event) => {
         event.preventDefault();
@@ -153,6 +161,10 @@ const SignUpForm = (props) => {
         fieldsIsValid = stateInputs[key].isValid && fieldsIsValid;
     }
 
+    if (props.userId) return (
+        <Redirect to={'/pulp'} />
+    )
+
     return (
         <React.Fragment>
             <Typography component="h1" variant="h5">Sign up</Typography>
@@ -161,28 +173,31 @@ const SignUpForm = (props) => {
                     {inputs}
                 </Grid>
 
-                <Typography
-                    variant="body1"
-                    display="block"
-                    className={classes.errorText}>
-                    {props.errorMessage}
-                </Typography>
+                {
+                    props.errorMessage !== null
+                        ? <Alert severity="error" className={classes.errorAlert}>{props.errorMessage}</Alert>
+                        : null
+                }
 
+ <div className={classes.buttonWrapper}>
                 <Button
                     type="submit"
                     fullWidth
                     variant="contained"
                     color="primary"
-                    disabled={!fieldsIsValid}
+                    disabled={!fieldsIsValid || props.authStart}
                     className={classes.submit}
                     onClick={signUpHandler}
                 >
                     <Typography variant="subtitle1">Sign Up</Typography>
                 </Button>
 
+                {props.authStart && <CircularProgress size={24} className={classes.buttonProgress} />}
+                </div>
+
                 <Grid container justify="flex-end">
                     <Grid item>
-                        <Link href="/sign-in" variant="body2" className={classes.redirectLink}>
+                        <Link component={ReactLink} to="/sign-in" variant="body2" className={classes.redirectLink}>
                             {'Already have an account? Sign in'}
                         </Link>
                     </Grid>
@@ -194,13 +209,16 @@ const SignUpForm = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        errorMessage: state.auth.errorMessage
+        errorMessage: state.auth.errorMessage,
+        userId: state.auth.id,
+        authStart: state.auth.authStart
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onSignUp: (newUser) => dispatch(signUpAction(newUser))
+        onSignUp: (newUser) => dispatch(signUpAction(newUser)),
+        finishLoading: () => { dispatch(finishLoadingActionCreator()) }
     }
 }
 

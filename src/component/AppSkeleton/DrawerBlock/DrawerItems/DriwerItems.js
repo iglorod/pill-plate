@@ -16,22 +16,22 @@ const DriwerItems = () => {
             <DrawerLogo />
 
             <List>
-                <DrawerItem text='Topics' to={'/us/topics'} icon={<SubjectRoundedIcon />} />
+                <DrawerItem text='Topics' to={'/pulp/topics'} icon={<SubjectRoundedIcon />} />
             </List>
 
             <Divider />
 
             <List>
-                <DrawerItem text='Links' to={'/us/links'} icon={<LinkRoundedIcon />} />
-                <DrawerItem text='Photos' to={'/us/photos'} icon={<PhotoCameraRoundedIcon />} />
-                <DrawerItem text='Files' to={'/us/files'} icon={<DescriptionRoundedIcon />} />
-                <DrawerItem text='Notes' to={'/us/notes'} icon={<NoteRoundedIcon />} />
+                <DrawerItem text='Links' to={'/pulp/links'} icon={<LinkRoundedIcon />} />
+                <DrawerItem text='Photos' to={'/pulp/photos'} icon={<PhotoCameraRoundedIcon />} />
+                <DrawerItem text='Files' to={'/pulp/files'} icon={<DescriptionRoundedIcon />} />
+                <DrawerItem text='Notes' to={'/pulp/notes'} icon={<NoteRoundedIcon />} />
             </List>
 
             <Divider />
 
             <List>
-                <DrawerItem text='Draft' to={'/us/draft'} icon={<DeleteRoundedIcon />} />
+                <DrawerItem text='Draft' to={'/pulp/draft'} icon={<DeleteRoundedIcon />} />
             </List>
         </div>
     )

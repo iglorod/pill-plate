@@ -26,11 +26,12 @@ const style = makeStyles(theme => ({
     },
     appBarButton: {
         borderRadius: 0,
-        padding: '8px',
+        padding: '0px',
         margin: '0 5px'
     },
     appBarLink: {
         display: 'inherit',
+        padding: '8px',
     },
     toolbar: theme.mixins.toolbar,
     drawerPaper: {
@@ -50,7 +51,7 @@ const style = makeStyles(theme => ({
         transition: '.2s all',
         "&:hover": {
             background: 'white !important',
-            boxShadow: theme.shadows[12],
+            boxShadow: theme.shadows[5],
         }
     },
 }));

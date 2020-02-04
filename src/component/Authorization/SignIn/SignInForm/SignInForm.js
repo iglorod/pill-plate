@@ -1,13 +1,19 @@
-import React, { useState } from 'react';
-import { Grid, Button, Typography, Checkbox, Link, TextField, FormControlLabel } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import { Grid, Button, Typography, Checkbox, Link, TextField, FormControlLabel, CircularProgress } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import useStyles from '../../styles';
 import { signInAction } from '../../../../store/actions/authorization';
 import { validation } from '../../../../utility/validation';
+import { ReactLink } from '../../../UI/Link/Link';
+import { finishLoadingActionCreator } from '../../../../store/actions/authorization';
 
 const SignInForm = (props) => {
     const classes = useStyles();
+
+    const [rememberMe, setRememberMe] = useState(false);
 
     const [stateInputs, setStateInputs] = useState({
         email: {
@@ -40,6 +46,10 @@ const SignInForm = (props) => {
         },
     });
 
+    useEffect(() => {
+        props.finishLoading();
+    }, [])
+
     const signInHandler = (event) => {
         event.preventDefault();
 
@@ -49,10 +59,16 @@ const SignInForm = (props) => {
         };
 
         try {
-            props.onSignIn(loginData);
+            props.onSignIn(loginData, rememberMe);
         } catch (error) {
             console.log(error);
         }
+    }
+
+    const rememberCheckboxHandler = () => {
+        setRememberMe(prevState => {
+            return !prevState
+        })
     }
 
     const onInputHandler = (inputName, event) => {
@@ -99,6 +115,10 @@ const SignInForm = (props) => {
         fieldsIsValid = stateInputs[key].isValid && fieldsIsValid;
     }
 
+    if (props.userId) return (
+        <Redirect to={'/pulp'} />
+    )
+
     return (
         <React.Fragment>
             <Typography component="h1" variant="h5">Sign in</Typography>
@@ -107,34 +127,38 @@ const SignInForm = (props) => {
                     {inputs}
                 </Grid>
 
-                <Typography
-                    variant="body1"
-                    display="block"
-                    className={classes.errorText}>
-                    {props.errorMessage}
-                </Typography>
+                {
+                    props.errorMessage !== null
+                        ? <Alert severity="error" className={classes.errorAlert}>{props.errorMessage}</Alert>
+                        : null
+                }
 
                 <FormControlLabel
-                    control={<Checkbox value="remember" color="primary" />}
+                    control={<Checkbox value="remember" color="primary" onChange={rememberCheckboxHandler} />}
                     label="Remember me" />
-                <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    disabled={!fieldsIsValid}
-                    className={classes.submit}
-                    onClick={signInHandler}>
-                    <Typography variant="subtitle1">Sign In</Typography>
-                </Button>
+
+                <div className={classes.buttonWrapper}>
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        disabled={!fieldsIsValid || props.authStart}
+                        className={classes.submit}
+                        onClick={signInHandler}>
+                        <Typography variant="subtitle1">Sign In</Typography>
+                    </Button>
+
+                    {props.authStart && <CircularProgress size={24} className={classes.buttonProgress} />}
+                </div>
 
                 <Grid container>
                     <Grid item xs>
                         <Link href="#" variant="body2" className={classes.redirectLink}>Forgot password?</Link>
                     </Grid>
                     <Grid item>
-                        <Link href="/sign-up" variant="body2" className={classes.redirectLink}>
-                            {"Don't have an account? Sign In"}
+                        <Link component={ReactLink} to="/sign-up" variant="body2" className={classes.redirectLink}>
+                            {"Don't have an account? Sign Up"}
                         </Link>
                     </Grid>
                 </Grid>
@@ -145,13 +169,16 @@ const SignInForm = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        errorMessage: state.auth.errorMessage
+        errorMessage: state.auth.errorMessage,
+        userId: state.auth.id,
+        authStart: state.auth.authStart
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onSignIn: (loginData) => { dispatch(signInAction(loginData)) }
+        onSignIn: (loginData, rememberMe) => { dispatch(signInAction(loginData, rememberMe)) },
+        finishLoading: () => { dispatch(finishLoadingActionCreator()) }
     }
 }
 

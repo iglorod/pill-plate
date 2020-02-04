@@ -16,20 +16,29 @@ const useStyles = makeStyles(theme => ({
         marginTop: theme.spacing(3),
     },
     submit: {
-        margin: theme.spacing(3, 0, 2),
     },
     wrapper: {
         background: 'white',
         boxShadow: theme.shadows[2]
     },
+    buttonWrapper: {
+        position: 'relative',
+        margin: theme.spacing(3, 0, 2),
+    },
     redirectLink: {
         color: theme.palette.primary.dark
     },
-    errorText: {
-        color: '#f44336',
-        margin: '5px 15px',
-        textAlign: 'center'
-    }
+    errorAlert: {
+        marginTop: '10px',
+    },
+    buttonProgress: {
+        color: theme.palette.primary.main,
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        marginTop: -12,
+        marginLeft: -12,
+      },
 }));
 
 export default useStyles;

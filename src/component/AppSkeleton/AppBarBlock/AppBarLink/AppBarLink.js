@@ -2,6 +2,7 @@ import React from 'react';
 import { IconButton, Typography, Link } from '@material-ui/core';
 
 import useStyle from '../../style';
+import { ReactLink } from '../../../UI/Link/Link';
 
 const AppBarLink = (props) => {
     const classes = useStyle();
@@ -9,10 +10,12 @@ const AppBarLink = (props) => {
     return (
         <IconButton
             edge="start"
+            onClick={props.logout}
             className={classes.appBarButton}
         >
             <Link
-                href={props.link}
+                component={ReactLink}
+                to={props.link}
                 color="inherit"
                 underline="none"
                 className={classes.appBarLink}
