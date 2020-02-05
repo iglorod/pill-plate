@@ -1,0 +1,25 @@
+.pageWrapper {
+    position: relative;
+}
+
+.pageWrapper > div {
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+}
+
+.pageComponentWrapper {
+    position: relative;
+}
+
+.pageComponentWrapper > div {
+    position: absolute;
+    height: calc(100vh - 56px);
+    width: 100%;
+}
+
+@media (min-width: 600px) {
+    .pageComponentWrapper > div {
+        height: calc(100vh - 64px);
+    }
+}

@@ -45,7 +45,7 @@ const reducer = (state = initialState, action) => {
             }
 
             if (action.remember) saveToLocalStorage(userData);
-            
+
             return {
                 ...userData,
                 loading: true
@@ -103,6 +103,7 @@ const reducer = (state = initialState, action) => {
 
             return {
                 ...userData,
+                loading: false
             };
         }
 

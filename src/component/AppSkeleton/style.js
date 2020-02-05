@@ -17,6 +17,7 @@ const style = makeStyles(theme => ({
             width: `calc(100% - ${drawerWidth}px)`,
             marginLeft: drawerWidth,
         },
+        boxShadow: theme.shadows[2],
     },
     menuButton: {
         marginRight: theme.spacing(2),
@@ -42,9 +43,8 @@ const style = makeStyles(theme => ({
     },
     content: {
         flexGrow: 1,
-        padding: theme.spacing(3),
     },
-    active: {
+    activeLink: {
         background: 'white',
         boxShadow: theme.shadows[3],
         fontWeight: '600',
@@ -54,6 +54,12 @@ const style = makeStyles(theme => ({
             boxShadow: theme.shadows[5],
         }
     },
+    nestedLink: {
+        paddingLeft: theme.spacing(4),
+    },
+    nestedLinkActive: {
+        background: 'rgba(0, 0, 0, 0.08)',
+    }
 }));
 
 export default style;

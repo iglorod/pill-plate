@@ -8,16 +8,20 @@ const DrawerItem = (props) => {
     const classes = useStyle();
 
     const RouterLink = React.forwardRef((routeProps, ref) => (
-        <NavLink ref={ref} to={props.to} {...routeProps} activeClassName={classes.active} />
+        <NavLink ref={ref} to={props.to} {...routeProps} activeClassName={props.isNested ? classes.nestedLinkActive : classes.activeLink} />
     ));
 
     return (
-        <li>
-            <ListItem button to={props.to} component={RouterLink} >
-                <ListItemIcon>{props.icon}</ListItemIcon>
-                <ListItemText primary={props.text} />
-            </ListItem>
-        </li>
+        <ListItem
+            button
+            className={props.isNested ? classes.nestedLink : null}
+            to={props.to}
+            component={RouterLink}
+            onClick={props.collapseToggle}>
+            <ListItemIcon>{props.icon}</ListItemIcon>
+            <ListItemText primary={props.text} />
+            {props.addTopicBtn}
+        </ListItem>
     )
 }
 

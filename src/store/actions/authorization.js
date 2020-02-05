@@ -136,7 +136,7 @@ export const refreshTokenAction = (token) => {
             })
             .catch(err => {
                 dispatch(errorActionCreator(err));
-                dispatch(resetTokenTimer());
+                dispatch(logoutActionCreator());
             });
     }
 }

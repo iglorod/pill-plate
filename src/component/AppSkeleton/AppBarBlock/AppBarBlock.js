@@ -1,11 +1,11 @@
 import React from 'react';
 import { AppBar, Toolbar } from '@material-ui/core';
-import { ExitToApp, MailOutline, Face } from '@material-ui/icons';
+import { ExitToApp, MailOutline } from '@material-ui/icons';
 import { connect } from 'react-redux';
 
 import useStyle from '../style';
 import AppBarLink from './AppBarLink/AppBarLink';
-import DrawerButton from './DrawerButton/DrawerButton';
+import DrawerButton from './MenuButton/MenuButton';
 import { logoutActionCreator } from '../../../store/actions/authorization';
 
 const AppBarBlock = (props) => {
@@ -14,7 +14,6 @@ const AppBarBlock = (props) => {
     const logoutHandler = () => {
         props.logout()
     }
-
 
     return (
         <AppBar position="fixed" className={classes.appBar} color={'inherit'}>

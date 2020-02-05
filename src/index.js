@@ -10,9 +10,11 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 
 import authReducer from './store/reducers/authorization';
+import topicReducer from './store/reducers/topics';
 
 const reducers = combineReducers({
     auth: authReducer,
+    tpc: topicReducer
 })
 
 const theme = createMuiTheme({
