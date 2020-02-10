@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import DrawerBlock from './DrawerBlock/DrawerBlock';
 import AppBarBlock from './AppBarBlock/AppBarBlock';
 import { finishLoadingActionCreator } from '../../store/actions/authorization';
+import { connectSocketActionCreator } from '../../store/actions/socket';
 import AnimatedSwitch from '../UI/AnimatedSwitch/AnimatedSwitch';
 import useStyle from './style';
 
@@ -19,6 +20,7 @@ const AppSceleton = (props) => {
 
     useEffect(() => {
         props.finishLoading();
+        props.connectSocket();
     }, [])
 
     const classes = useStyle();
@@ -47,7 +49,8 @@ const AppSceleton = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        finishLoading: () => { dispatch(finishLoadingActionCreator()) }
+        finishLoading: () => { dispatch(finishLoadingActionCreator()) },
+        connectSocket: () => { dispatch(connectSocketActionCreator()) },
     }
 }
 

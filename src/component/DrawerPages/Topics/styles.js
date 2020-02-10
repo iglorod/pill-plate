@@ -54,16 +54,53 @@ const style = makeStyles(theme => ({
         fontFamily: 'Lato, sans-serif',
         fontSize: '28px',
         margin: '0',
+        wordBreak: 'break-word',
     },
     topicNote: {
         fontSize: '14px',
         color: 'grey',
+        overflow: 'auto',
+        "&::-webkit-scrollbar-track": {
+            boxShadow: 'inset 0 0 6px rgba(0, 0, 0, 0.3)',
+            borderRadius: '10px',
+            backgroundColor: 'transparent',
+        },
+        "&::-webkit-scrollbar": {
+            width: '8px',
+            backgroundColor: 'transparent',
+        },
+        "&::-webkit-scrollbar-thumb": {
+            borderRadius: '10px',
+            boxShadow: 'inset 0 0 6px rgba(0, 0, 0, .3)',
+            backgroundColor: 'rgba(129, 129, 129, 0.1)',
+            opacity: '0.3',
+        }
     },
     topicCreated: {
         color: 'grey',
         fontSize: '12px',
         margin: '0',
     },
+    topicHat: {
+        height: '10px',
+        width: '100%',
+        position: 'absolute',
+        top: '0',
+        background: '#FFE66D',
+        borderTopLeftRadius: '5px',
+        borderTopRightRadius: '5px',
+    },
+    topicMenuButton: {
+        zIndex: '1',
+        position: 'absolute',
+        top: '15px',
+        right: '0',
+        transition: 'all .3s',
+        "&:hover": {        
+            background: 'none',
+            color: '#000000',
+        }
+    }
 }));
 
 export default style;

@@ -23,6 +23,11 @@ export const validation = (string, validationRules, originalEmail) => {
         validationMessage = changeValidationMessage(isValid, 'Min password length is 4 symbols', validationMessage);
     }
 
+    if (validationRules.maxLength && isValid) {
+        isValid = string.length < validationRules.maxLength && isValid;
+        validationMessage = changeValidationMessage(isValid, 'Max length is ' + validationRules.maxLength + ' symbols', validationMessage);
+    }
+
     if (validationRules.shoudBeEqual && isValid) {
         isValid = string === originalEmail && isValid;
         validationMessage = changeValidationMessage(isValid, 'Please, enter the valid email address', validationMessage);

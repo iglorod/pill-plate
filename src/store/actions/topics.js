@@ -21,6 +21,27 @@ export const getTopicsActionCreator = (topics) => {
     }
 }
 
+export const createTopicActionCreator = (topic) => {
+    return {
+        type: actionTypes.ADD_TOPIC,
+        topic: topic
+    }
+}
+
+export const editTopicActionCreator = (topic) => {
+    return {
+        type: actionTypes.EDIT_TOPIC,
+        topic: topic
+    }
+}
+
+export const setCurrentTopicActionCreator = (topicId) => {
+    return {
+        type: actionTypes.SET_CURRENT_TOPIC,
+        topicId: topicId
+    }
+}
+
 export const getTopicsAction = () => {
     return (dispatch, getState) => {
         dispatch(fetchingStartActionCreator());
@@ -34,5 +55,29 @@ export const getTopicsAction = () => {
                 dispatch(getTopicsActionCreator(topics.data));
             })
             .catch(error => dispatch(errorActionCreator()))
+    }
+}
+
+export const createTopicAction = (topic) => {
+    return (dispatch, getState) => {
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + getState().auth.token;
+        axios.post('http://localhost:4000/topics', topic)
+        .then(topic => {
+            dispatch(createTopicActionCreator(topic.data));
+        })
+        .catch(error => dispatch(errorActionCreator()))
+    }
+}
+
+export const editTopicAction = (topic) => {
+    return (dispatch, getState) => {
+        const updatedData = {
+            name: topic.name,
+            note: topic.note,
+        }
+
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + getState().auth.token;
+        axios.patch('http://localhost:4000/topics/single/' + topic._id, updatedData)
+        .catch(error => dispatch(errorActionCreator()))
     }
 }

@@ -11,16 +11,21 @@ import thunk from 'redux-thunk';
 
 import authReducer from './store/reducers/authorization';
 import topicReducer from './store/reducers/topics';
+import socketReducer from './store/reducers/socket';
+import messageReducer from './store/reducers/messages';
 
 const reducers = combineReducers({
     auth: authReducer,
-    tpc: topicReducer
+    tpc: topicReducer,
+    sckt: socketReducer,
+    msg: messageReducer,
 })
 
 const theme = createMuiTheme({
     palette: {
         primary: {
-            main: '#FFE66D'
+            main: '#FFE66D',
+            dark: '#F5B82E'
         },
         secondary: {
             main: deepOrange[400]

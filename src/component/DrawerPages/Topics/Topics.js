@@ -5,6 +5,7 @@ import Links from '../Links/Links';
 import Photos from '../Photos/Photos';
 import Files from '../Files/Files';
 import Notes from '../Notes/Notes';
+import TopicContent from '../TopicContent/TopicContent';
 import TopicsList from './TopicsList/TopicsList';
 import AnimatedSwitch from '../../UI/AnimatedSwitch/AnimatedSwitch';
 
@@ -15,6 +16,7 @@ const topics = (props) => {
             <Route path={props.match.url + '/photos'} component={Photos} exact/>
             <Route path={props.match.url + '/files'} component={Files} exact/>
             <Route path={props.match.url + '/notes'} component={Notes} exact/>
+            <Route path={props.match.url + '/:id'} component={TopicContent} exact/>
             <Route path={props.match.url} component={TopicsList} />
         </AnimatedSwitch>
     )

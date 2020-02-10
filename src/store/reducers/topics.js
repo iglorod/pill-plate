@@ -2,8 +2,10 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
     topics: [],
+    openedTopicId: null,
     loading: false,
-    error: false
+    error: false,
+    wasFetched: false,
 }
 
 const reducer = (state = initialState, action) => {
@@ -40,7 +42,42 @@ const reducer = (state = initialState, action) => {
             return {
                 loading: false,
                 error: false,
-                topics: [...topics]
+                topics: [...topics],
+                wasFetched: true,
+            }
+        }
+
+        case actionTypes.ADD_TOPIC: {
+            const humanDate = new Date(action.topic.date * 1000).toLocaleDateString();  
+
+            return {
+                ...state,
+                topics: [
+                    ...state.topics,
+                    {
+                        ...action.topic,
+                        date: humanDate,
+                    }
+                ]
+            }
+        }
+
+        case actionTypes.EDIT_TOPIC: {
+            const topics = state.topics.filter(item => item._id !== action.topic._id);
+          
+            return {
+                ...state,
+                topics: [
+                    { ...action.topic },
+                    ...topics,
+                ]
+            }
+        }
+
+        case actionTypes.SET_CURRENT_TOPIC: {
+            return {
+                ...state,
+                openedTopicId: action.topicId,
             }
         }
 

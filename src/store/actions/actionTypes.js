@@ -14,3 +14,14 @@ export const GET_TOPICS = 'GET_TOPICS';
 export const START_FETCHING = 'START_FETCHING';
 export const TOPICS_ERROR = 'TOPICS_ERROR';
 export const FINISH_FETCHING = 'FINISH_FETCHING';
+export const ADD_TOPIC = 'ADD_TOPIC';
+export const EDIT_TOPIC = 'EDIT_TOPIC';
+export const SET_CURRENT_TOPIC = 'SET_CURRENT_TOPIC';
+
+//socket.io
+export const CONNECT_SOCKET = 'CONNECT_SOCKET';
+
+//messages
+export const MESSAGE_ERROR = 'MESSAGE_ERROR';
+export const TEXT_MESSAGE_SAVE = 'TEXT_MESSAGE_SAVE';
+

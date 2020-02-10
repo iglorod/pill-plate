@@ -179,20 +179,20 @@ const SignUpForm = (props) => {
                         : null
                 }
 
- <div className={classes.buttonWrapper}>
-                <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    disabled={!fieldsIsValid || props.authStart}
-                    className={classes.submit}
-                    onClick={signUpHandler}
-                >
-                    <Typography variant="subtitle1">Sign Up</Typography>
-                </Button>
+                <div className={classes.buttonWrapper}>
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        disabled={!fieldsIsValid || props.authStart}
+                        className={classes.submit}
+                        onClick={signUpHandler}
+                    >
+                        <Typography variant="subtitle1">Sign Up</Typography>
+                    </Button>
 
-                {props.authStart && <CircularProgress size={24} className={classes.buttonProgress} />}
+                    {props.authStart && <CircularProgress size={24} className={classes.buttonProgress} />}
                 </div>
 
                 <Grid container justify="flex-end">
