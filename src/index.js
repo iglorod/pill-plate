@@ -5,7 +5,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import deepOrange from '@material-ui/core/colors/deepOrange';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 
@@ -28,12 +28,15 @@ const theme = createMuiTheme({
             dark: '#F5B82E'
         },
         secondary: {
+            light: '#ffd473',
             main: deepOrange[400]
         },
     }
 });
 
-const store = createStore(reducers, applyMiddleware(thunk));
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk)));
 
 ReactDOM.render(
     <MuiThemeProvider theme={theme}>

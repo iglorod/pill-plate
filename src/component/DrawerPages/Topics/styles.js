@@ -7,9 +7,7 @@ const style = makeStyles(theme => ({
         width: '100%',
         overflow: 'auto',
         "&::-webkit-scrollbar-track": {
-            boxShadow: 'inset 0 0 6px rgba(0, 0, 0, 0.3)',
             borderRadius: '10px',
-            backgroundColor: 'transparent',
         },
         "&::-webkit-scrollbar": {
             width: '8px',
@@ -17,10 +15,9 @@ const style = makeStyles(theme => ({
         },
         "&::-webkit-scrollbar-thumb": {
             borderRadius: '10px',
-            boxShadow: 'inset 0 0 6px rgba(0, 0, 0, .3)',
-            backgroundColor: 'rgba(129, 129, 129, 0.1)',
+            backgroundColor: '#fff6ca',
             opacity: '0.3',
-        }
+        },
     },
     gridConatainer: {
         width: '100%',
@@ -61,9 +58,7 @@ const style = makeStyles(theme => ({
         color: 'grey',
         overflow: 'auto',
         "&::-webkit-scrollbar-track": {
-            boxShadow: 'inset 0 0 6px rgba(0, 0, 0, 0.3)',
             borderRadius: '10px',
-            backgroundColor: 'transparent',
         },
         "&::-webkit-scrollbar": {
             width: '8px',
@@ -71,10 +66,9 @@ const style = makeStyles(theme => ({
         },
         "&::-webkit-scrollbar-thumb": {
             borderRadius: '10px',
-            boxShadow: 'inset 0 0 6px rgba(0, 0, 0, .3)',
-            backgroundColor: 'rgba(129, 129, 129, 0.1)',
+            backgroundColor: '#fff6ca',
             opacity: '0.3',
-        }
+        },
     },
     topicCreated: {
         color: 'grey',

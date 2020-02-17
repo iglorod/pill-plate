@@ -1,18 +1,35 @@
 import * as actionTypes from '../actions/actionTypes';
 
-const initialState = {}
+const initialState = {
+    savingMessages: false,
+    fetchingMessages: false,
+    topics: {},
+}
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case actionTypes.TEXT_MESSAGE_SAVE: {
-            console.log(state);
+        case actionTypes.START_MESSAGES_SAVING: {
+            return {
+                ...state,
+                savingMessages: true,
+            }
+        }
+
+        case actionTypes.FINISH_MESSAGES_SAVING: {
+            return {
+                ...state,
+                savingMessages: false,
+            }
+        }
+
+        case actionTypes.MESSAGE_SAVE: {
             let topicMessages = [
                 { ...action.message }
             ]
 
-            if (state[action.message.topicId])
+            if (state.topics[action.message.topicId])
                 topicMessages = [
-                    ...state[action.message.topicId].messages,
+                    ...state.topics[action.message.topicId].messages,
                     {
                         ...action.message
                     }
@@ -20,11 +37,68 @@ const reducer = (state = initialState, action) => {
 
             return {
                 ...state,
-                [action.message.topicId]: {
-                    ...state[action.message.topicId],
-                    messages: [
-                        ...topicMessages,
-                    ]
+                topics: {
+                    ...state.topics,
+                    [action.message.topicId]: {
+                        ...state.topics[action.message.topicId],
+                        messages: [
+                            ...topicMessages,
+                        ]
+                    }
+                }
+            }
+        }
+
+        case actionTypes.START_MESSAGES_FETCHING: {
+            return {
+                ...state,
+                fetchingMessages: true,
+            }
+        }
+
+        case actionTypes.FINISH_MESSAGES_FETCHING: {
+            return {
+                ...state,
+                fetchingMessages: false,
+            }
+        }
+
+        case actionTypes.FETCH_MESSAGES: {
+            if (action.messages.length === 0){
+                return {
+                    ...state,
+                    topics: {
+                        ...state.topics,
+                        [action.topicId]: {
+                            ...state.topics[action.topicId],
+                            allIsFetched: true,
+                        }
+                    }
+                }
+            }
+
+            let topicMessages = [
+                ...action.messages
+            ]
+
+            if (state.topics[action.topicId]) {
+                topicMessages = [
+                    ...action.messages,
+                    ...state.topics[action.topicId].messages,
+                ]
+            }
+
+            return {
+                ...state,
+                topics: {
+                    ...state.topics,
+                    [action.topicId]: {
+                        ...state.topics[action.topicId],
+                        messages: [
+                            ...topicMessages,
+                        ],
+                        allIsFetched: false,
+                    }
                 }
             }
         }

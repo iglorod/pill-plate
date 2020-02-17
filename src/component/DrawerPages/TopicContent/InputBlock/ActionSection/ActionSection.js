@@ -12,10 +12,17 @@ const ActionSection = (props) => {
     return (
         <section style={{ display: 'flex', justifyContent: 'space-between', }}>
 
-            <DropFile icon={<Note className={classes.addFileBtn} />} />
-            <DropFile icon={<PhotoCamera className={classes.addImageBtn} />} imageDrop />
+            <DropFile
+                icon={<Note className={classes.addFileBtn} />} 
+                setAllowScrollToBtm={props.setAllowScrollToBtm} 
+                changeProgress={props.changeProgress} />
+            <DropFile
+                icon={<PhotoCamera className={classes.addImageBtn} />}
+                setAllowScrollToBtm={props.setAllowScrollToBtm}
+                changeProgress={props.changeProgress}
+                imageDrop />
 
-            <div style={{ overflow: 'hidden', display: 'flex', }}>
+            <div style={{ overflow: 'hidden', display: 'flex', width: '100%', }}>
                 {
                     props.smiles.map(item => {
                         return (

@@ -36,9 +36,11 @@ const reducer = (state = initialState, action) => {
             const topics = action.topics.map(item => {
                 const humanDate = new Date(item.date * 1000).toLocaleDateString();
                 item.date = humanDate;
+
+                action.socket.emit('join-to-topic', item._id);  //subscribe user
                 return item;
-            });
-            
+            });       
+                 
             return {
                 loading: false,
                 error: false,

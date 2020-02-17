@@ -6,6 +6,7 @@ import { getTopicsAction } from '../../../../store/actions/topics';
 import useStyles from '../styles';
 import Topic from './Topic/Topic';
 import EditTopicDialog from '../../../UI/Dialog/EditTopic';
+import { saveMessageActionCreator } from '../../../../store/actions/messages';
 
 const TopicsList = (props) => {
     const classes = useStyles();
@@ -15,7 +16,13 @@ const TopicsList = (props) => {
     const [selectedTopicData, setSelectedTopicData] = useState(null);
 
     useEffect(() => {
-        if (!props.wasFetched) props.getTopicsList();
+        if (!props.wasFetched) {
+            props.getTopicsList(props.socket);
+
+            props.socket.on('recive-message', message => {
+                props.reciveMessage(message);
+            });
+        }
     }, [])
 
     const dialogOpen = (topic) => {
@@ -31,8 +38,8 @@ const TopicsList = (props) => {
     return (
         <React.Fragment>
             <EditTopicDialog open={editTopicDialogOpen} handleClose={dialogClose} topic={selectedTopicData} />
-           
-           <div className={classes.root}>
+
+            <div className={classes.root}>
                 <Grid container spacing={3} className={classes.gridConatainer}>
                     {
                         props.topics.map((item, index) => {
@@ -54,14 +61,16 @@ const TopicsList = (props) => {
 
 const mapStateToProps = (state) => {
     return {
+        socket: state.sckt.socket,
         topics: state.tpc.topics,
-        wasFetched: state.tpc.wasFetched
+        wasFetched: state.tpc.wasFetched,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getTopicsList: () => { dispatch(getTopicsAction()) }
+        getTopicsList: (socket) => { dispatch(getTopicsAction(socket)) },
+        reciveMessage: (message) => { dispatch(saveMessageActionCreator(message)) },
     }
 }
 

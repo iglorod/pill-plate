@@ -76,13 +76,14 @@ const InputBlock = (props) => {
     }
 
     const sendMessage = () => {
+        if (textAreaValue === '') return;
         const messageData = {
             text: textAreaValue,
             sender: props.userId
         }
 
+        props.setAllowScrollToBtm(true);
         props.sendTextMessage(messageData, props.socket);
-
         setTextAreaValue('');
     }
 
@@ -136,6 +137,8 @@ const InputBlock = (props) => {
                 smiles={freqSmiles}
                 addEmoji={addFreqEmoji}
                 sendMessage={sendMessage}
+                setAllowScrollToBtm={props.setAllowScrollToBtm}
+                changeProgress={props.changeProgress}
             />
         </div>
     )

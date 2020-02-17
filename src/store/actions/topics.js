@@ -14,10 +14,11 @@ export const errorActionCreator = () => {
     }
 }
 
-export const getTopicsActionCreator = (topics) => {
+export const getTopicsActionCreator = (topics, socket) => {
     return {
         type: actionTypes.FINISH_FETCHING,
-        topics: topics
+        topics: topics,
+        socket: socket,
     }
 }
 
@@ -42,7 +43,7 @@ export const setCurrentTopicActionCreator = (topicId) => {
     }
 }
 
-export const getTopicsAction = () => {
+export const getTopicsAction = (socket) => {
     return (dispatch, getState) => {
         dispatch(fetchingStartActionCreator());
 
@@ -52,7 +53,7 @@ export const getTopicsAction = () => {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
         axios.get('http://localhost:4000/topics/' + userId)
             .then(topics => {
-                dispatch(getTopicsActionCreator(topics.data));
+                dispatch(getTopicsActionCreator(topics.data, socket));
             })
             .catch(error => dispatch(errorActionCreator()))
     }

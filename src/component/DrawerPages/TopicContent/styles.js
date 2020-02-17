@@ -5,14 +5,16 @@ const style = makeStyles(theme => ({
         height: '100%',
         width: '100%',
         padding: theme.spacing(3),
+        paddingTop: '0',
         margin: 'auto',
         overflow: 'auto',
         background: '#FFFFFF',
         boxShadow: theme.shadows[3],
+        [theme.breakpoints.down('sm')]: {
+            padding: theme.spacing(0.5),
+        },
         "&::-webkit-scrollbar-track": {
-            boxShadow: 'inset 0 0 6px rgba(0, 0, 0, 0.3)',
             borderRadius: '10px',
-            backgroundColor: 'transparent',
         },
         "&::-webkit-scrollbar": {
             width: '8px',
@@ -20,12 +22,11 @@ const style = makeStyles(theme => ({
         },
         "&::-webkit-scrollbar-thumb": {
             borderRadius: '10px',
-            boxShadow: 'inset 0 0 6px rgba(0, 0, 0, .3)',
-            backgroundColor: 'rgba(129, 129, 129, 0.1)',
+            backgroundColor: '#fff6ca',
             opacity: '0.3',
         },
         [theme.breakpoints.up('md')]: {
-            width: '70%',
+            width: '80%',
         },
         [theme.breakpoints.up('lg')]: {
             width: '50%',
@@ -45,19 +46,16 @@ const style = makeStyles(theme => ({
         justifyContent: 'flex-end',
     },
     textArea: {
-        "& textarea::-webkit-scrollbar-track": {
-            boxShadow: 'inset 0 0 6px rgba(0, 0, 0, 0.3)',
+        "&::-webkit-scrollbar-track": {
             borderRadius: '10px',
-            backgroundColor: 'transparent',
         },
-        "& textarea::-webkit-scrollbar": {
+        "&::-webkit-scrollbar": {
             width: '8px',
             backgroundColor: 'transparent',
         },
-        "& textarea::-webkit-scrollbar-thumb": {
+        "&::-webkit-scrollbar-thumb": {
             borderRadius: '10px',
-            boxShadow: 'inset 0 0 6px rgba(0, 0, 0, .3)',
-            backgroundColor: 'rgba(129, 129, 129, 0.1)',
+            backgroundColor: '#fff6ca',
             opacity: '0.3',
         },
     },
@@ -129,6 +127,53 @@ const style = makeStyles(theme => ({
         '&:hover': {
             background: 'transparent',
         }
+    },
+    messageSecondartAction: {
+        '& > span': {
+            color: 'grey'
+        },
+    },
+    messagesList: {
+        overflow: 'auto',
+        "&::-webkit-scrollbar-track": {
+            borderRadius: '10px',
+        },
+        "&::-webkit-scrollbar": {
+            width: '8px',
+            backgroundColor: 'transparent',
+        },
+        "&::-webkit-scrollbar-thumb": {
+            borderRadius: '10px',
+            backgroundColor: '#fff6ca',
+            opacity: '0.3',
+        },
+    },
+    downloadLink: {
+        color: 'grey',
+        textDecoration: 'none',
+        '&:hover': {
+            textDecoration: 'underline',
+        }
+    },
+    downloadIcon: {
+        backgroundColor: '#4e4e4e',
+        cursor: 'pointer',
+    },
+    messageAuthorEmail: {
+        fontFamily: 'Nunito, sans-serif',
+        fontSize: '14px',
+        fontWeight: '600',
+        margin: '0',
+        color: '#5d5d5d',
+        display: 'inline',
+    },
+    capitalizeEmail: {
+        textTransform: 'capitalize',
+        display: 'inline',
+    },
+    messageLiElement: {
+        paddingTop: '0',
+        paddingBottom: '0',
     }
 }));
 
