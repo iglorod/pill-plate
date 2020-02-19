@@ -6,6 +6,10 @@ import MessageItems from './MessageItems/MessageItems';
 import EmptyMessage from './EmptyMessage/EmptyMessage';
 import { fetchMessagesAction } from '../../../../store/actions/messages';
 
+const topicIsExist = (topic) => {
+    return topic && topic.messages;
+}
+
 const MessageBlock = (props) => {
     const classes = useStyles();
 
@@ -13,15 +17,31 @@ const MessageBlock = (props) => {
     const [, setAllIsFetched] = useState(false);
 
     useEffect(() => {
-        setMessagesCount((props.topic) ? props.topic.messages.length : 0);
-    }, [(props.topic) ? props.topic.messages : null])
+        setMessagesCount(
+            (topicIsExist(props.topic))
+                ? props.topic.messages.length
+                : 0
+        );
+    }, [
+        (topicIsExist(props.topic))
+            ? props.topic.messages
+            : null
+    ])
 
     useEffect(() => {
-        setAllIsFetched((props.topic) ? props.topic.allIsFetched : false);
-    }, [(props.topic) ? props.topic.allIsFetched : null])
+        setAllIsFetched(
+            (topicIsExist(props.topic))
+                ? props.topic.allIsFetched
+                : false
+        );
+    }, [
+        (topicIsExist(props.topic))
+            ? props.topic.allIsFetched
+            : null
+    ])
 
     useEffect(() => {
-        const fetchedCount = (props.topic) ? props.topic.messages.length : 0
+        const fetchedCount = (topicIsExist(props.topic)) ? props.topic.messages.length : 0
         if (props.currTopicId && fetchedCount === 0)
             loadMessagesHistory();
     }, [props.currTopicId])
@@ -45,12 +65,12 @@ const MessageBlock = (props) => {
     }
 
     let messages = <EmptyMessage />
-    if (props.topic !== undefined) {
+    if (topicIsExist(props.topic)) {
         messages = <MessageItems
             scrollToEl={props.scrollToEl}
             scrollToBottom={props.scrollToBottom}
-            loadMessagesHistory={loadMessagesHistory} 
-            allowScrollToBtm={props.allowScrollToBtm} 
+            loadMessagesHistory={loadMessagesHistory}
+            allowScrollToBtm={props.allowScrollToBtm}
             setAllowScrollToBtm={props.setAllowScrollToBtm}
             loadingFileProgress={props.loadingFileProgress} />
     }

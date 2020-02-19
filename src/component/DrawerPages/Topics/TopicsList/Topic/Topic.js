@@ -12,7 +12,10 @@ const Topic = (props) => {
     return (
         <Zoom in={true} style={{ transitionDelay: 200 * props.delay + 'ms', position: 'relative' }}>
             <Grid item xs={12} sm={6} md={4} lg={3} >
-                <TopicMenu dialogOpen={props.dialogOpen} />
+                <TopicMenu
+                    edtiDialogOpen={props.edtiDialogOpen}
+                    shareDialogOpen={props.shareDialogOpen} 
+                    topic={props.data} />
                 <Link className={classes.topicLink} to={props.match.url + '/' + props.data._id}>
                     <ButtonBase className={classes.topic}>
                         <div className={classes.topicHat}></div>

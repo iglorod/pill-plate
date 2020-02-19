@@ -29,7 +29,7 @@ const style = makeStyles(theme => ({
             width: '80%',
         },
         [theme.breakpoints.up('lg')]: {
-            width: '50%',
+            width: '60%',
         },
     },
     messagesBlock: {
@@ -128,7 +128,9 @@ const style = makeStyles(theme => ({
             background: 'transparent',
         }
     },
-    messageSecondartAction: {
+    messageSecondaryAction: {
+        top: '9px',
+        transform: 'none',
         '& > span': {
             color: 'grey'
         },
@@ -174,6 +176,10 @@ const style = makeStyles(theme => ({
     messageLiElement: {
         paddingTop: '0',
         paddingBottom: '0',
+    },
+    topLiFetching: {
+        textAlign: 'center',
+        padding: '30px 0',
     }
 }));
 

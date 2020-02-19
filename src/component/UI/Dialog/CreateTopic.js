@@ -6,7 +6,8 @@ import {
     DialogContent,
     DialogTitle,
     Slide,
-    TextField
+    TextField,
+    Snackbar
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 
@@ -49,6 +50,16 @@ const CreateTopic = (props) => {
         }
     });
 
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+
+    const handleCloseSnackbar = () => {
+        setOpenSnackbar(false);
+    }
+
+    const handleOpenSnackbar = () => {
+        setOpenSnackbar(true);
+    }
+
     const clearState = () => {
         setStateInputs(prevState => {
             return {
@@ -77,11 +88,11 @@ const CreateTopic = (props) => {
         }
 
         //close and clear dialog
-        props.handleClose(); 
+        props.handleClose();
         clearState();
 
         //create topic
-        props.startCreatingTopic(newTopic);
+        props.startCreatingTopic(newTopic, props.socket, handleOpenSnackbar);
     }
 
     const onInputHandler = (inputName, event) => {
@@ -127,40 +138,49 @@ const CreateTopic = (props) => {
     }
 
     return (
-        <Dialog
-            open={props.open}
-            TransitionComponent={Transition}
-            keepMounted
-            maxWidth={'xs'}
-            onClose={() => {
-                clearState();
-                props.handleClose();
-            }}
-            aria-labelledby="alert-dialog-slide-title"
-            aria-describedby="alert-dialog-slide-description"
-        >
-            <div className={classes.dialogColorHat}></div>
-            <DialogTitle id="alert-dialog-slide-title" className={classes.topicTitle}>{"Create Topic"}</DialogTitle>
-            <DialogContent>
-                {inputs}
-            </DialogContent>
-            <DialogActions>
-                <Button className={classes.closeBtn} onClick={props.handleClose}>Disagree</Button>
-                <Button disabled={!fieldsIsValid} className={classes.agreeBtn} onClick={createTopicHandler}>Agree</Button>
-            </DialogActions>
-        </Dialog>
+        <React.Fragment>
+            <Dialog
+                open={props.open}
+                TransitionComponent={Transition}
+                keepMounted
+                maxWidth={'xs'}
+                onClose={() => {
+                    clearState();
+                    props.handleClose();
+                }}
+                aria-labelledby="alert-dialog-slide-title"
+                aria-describedby="alert-dialog-slide-description"
+            >
+                <div className={classes.dialogColorHat}></div>
+                <DialogTitle id="alert-dialog-slide-title" className={classes.topicTitle}>{"Create Topic"}</DialogTitle>
+                <DialogContent>
+                    {inputs}
+                </DialogContent>
+                <DialogActions>
+                    <Button className={classes.closeBtn} onClick={props.handleClose}>Disagree</Button>
+                    <Button disabled={!fieldsIsValid} className={classes.agreeBtn} onClick={createTopicHandler}>Agree</Button>
+                </DialogActions>
+            </Dialog>
+            <Snackbar
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                open={openSnackbar}
+                onClose={handleCloseSnackbar}
+                message={'Topic was created'}
+            />
+        </React.Fragment>
     )
 }
 
 const mapStateToProps = (state) => {
     return {
         userId: state.auth.id,
+        socket: state.sckt.socket,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        startCreatingTopic: (topic) => { dispatch(createTopicAction(topic)) }
+        startCreatingTopic: (topic, socket, handleOpenSnackbar) => { dispatch(createTopicAction(topic, socket, handleOpenSnackbar)) }
     }
 }
 

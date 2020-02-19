@@ -9,6 +9,7 @@ import useStyles from '../styles';
 import './InputBlock.css';
 import ActionSection from './ActionSection/ActionSection';
 import { sendTextMessageAction } from '../../../../store/actions/messages';
+import * as messageTypes from '../../../../utility/message-types';
 
 const getFreqSmiles = () => {
     const freqObj = JSON.parse(localStorage.getItem('emoji-mart.frequently'));
@@ -81,9 +82,15 @@ const InputBlock = (props) => {
             text: textAreaValue,
             sender: props.userId
         }
+        const urlMatches = textAreaValue.match(/\b(http|https)?:\/\/\S+/gi) || [];
 
         props.setAllowScrollToBtm(true);
-        props.sendTextMessage(messageData, props.socket);
+
+        if (urlMatches.length === 0)
+            props.sendTextMessage(messageData, props.socket, messageTypes.TEXT);
+        else
+            props.sendTextMessage(messageData, props.socket, messageTypes.LINK);
+
         setTextAreaValue('');
     }
 
@@ -153,7 +160,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        sendTextMessage: (message, socket) => { dispatch(sendTextMessageAction(message, socket)) }
+        sendTextMessage: (message, socket, messageType) => { dispatch(sendTextMessageAction(message, socket, messageType)) },
     }
 }
 

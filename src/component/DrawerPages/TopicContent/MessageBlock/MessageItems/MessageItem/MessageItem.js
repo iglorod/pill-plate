@@ -10,6 +10,7 @@ import {
 import useStyles from '../../../styles';
 import * as messageTypes from '../../../../../../utility/message-types';
 import TextItem from './TextItem/TextItem';
+import LinkItem from './LinkItem/LinkItem';
 import FileItem from './FileItem/FileItem';
 import ImageItem from './ImageItem/ImageItem';
 import VideoItem from './VideoItem/VideoItem';
@@ -17,6 +18,9 @@ import VideoItem from './VideoItem/VideoItem';
 const displayedDataByType = (message, show) => {
     if (message.type === messageTypes.TEXT) {
         return <TextItem message={message} showName={show} />
+    }
+    if (message.type === messageTypes.LINK) {
+        return <LinkItem message={message} showName={show} />
     }
     else if (message.type === messageTypes.FILE)
         return <FileItem message={message} showName={show} />
@@ -55,7 +59,7 @@ const MessageItem = (props) => {
                 }
             </ListItemAvatar>
             {dataComponent}
-            <ListItemSecondaryAction className={classes.messageSecondartAction}>
+            <ListItemSecondaryAction className={classes.messageSecondaryAction}>
                 <Typography variant="caption" display="block" gutterBottom>{humanDate}</Typography>
             </ListItemSecondaryAction>
         </ListItem>

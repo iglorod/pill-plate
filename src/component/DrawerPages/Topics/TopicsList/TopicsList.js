@@ -6,16 +6,19 @@ import { getTopicsAction } from '../../../../store/actions/topics';
 import useStyles from '../styles';
 import Topic from './Topic/Topic';
 import EditTopicDialog from '../../../UI/Dialog/EditTopic';
+import ShareTopicDialog from '../../../UI/Dialog/ShareTopic';
 import { saveMessageActionCreator } from '../../../../store/actions/messages';
 
 const TopicsList = (props) => {
     const classes = useStyles();
 
-    const [editTopicDialogOpen, setTopicDialogOpen] = useState(false);
+    const [editTopicDialogOpen, setEditTopicDialogOpen] = useState(false);
+    const [shareTopicDialogOpen, setShareTopicDialogOpen] = useState(false);
 
     const [selectedTopicData, setSelectedTopicData] = useState(null);
 
     useEffect(() => {
+
         if (!props.wasFetched) {
             props.getTopicsList(props.socket);
 
@@ -25,19 +28,26 @@ const TopicsList = (props) => {
         }
     }, [])
 
-    const dialogOpen = (topic) => {
+    const edtiDialogOpen = (topic) => {
         setSelectedTopicData(topic);
-        setTopicDialogOpen(true);
+        setEditTopicDialogOpen(true);
+    }
+
+    const shareDialogOpen = (topic) => {
+        setSelectedTopicData(topic);
+        setShareTopicDialogOpen(true);
     }
 
     const dialogClose = () => {
-        setTopicDialogOpen(false);
+        setEditTopicDialogOpen(false);
+        setShareTopicDialogOpen(false);
         setSelectedTopicData(null);
     }
 
     return (
         <React.Fragment>
             <EditTopicDialog open={editTopicDialogOpen} handleClose={dialogClose} topic={selectedTopicData} />
+            <ShareTopicDialog open={shareTopicDialogOpen} handleClose={dialogClose} topic={selectedTopicData} />
 
             <div className={classes.root}>
                 <Grid container spacing={3} className={classes.gridConatainer}>
@@ -48,7 +58,8 @@ const TopicsList = (props) => {
                                     data={item}
                                     delay={index}
                                     key={index}
-                                    dialogOpen={dialogOpen.bind(this, item)}
+                                    edtiDialogOpen={edtiDialogOpen.bind(this, item)}
+                                    shareDialogOpen={shareDialogOpen.bind(this, item)}
                                 />
                             )
                         })

@@ -9,55 +9,40 @@ import {
     TextField,
     Snackbar
 } from '@material-ui/core';
-import { connect } from 'react-redux';
+import axios from 'axios';
 
 import useStyles from './style';
 import { validation } from '../../../utility/validation';
-import { editTopicAction, editTopicActionCreator } from '../../../store/actions/topics';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const EditTopic = (props) => {
+const ShareTopic = (props) => {
     const classes = useStyles();
 
     const [stateInputs, setStateInputs] = useState({
-        title: {
+        email: {
             config: {
-                name: 'title',
-                label: 'Title',
+                name: 'email',
+                label: 'Email',
             },
             validationRules: {
                 isRequred: true,
-                maxLength: 20,
+                isEmail: true,
             },
             isValid: false,
             validationMessage: '',
             value: '',
         },
-        notes: {
-            config: {
-                name: 'notes',
-                label: 'Notes',
-            },
-            validationRules: {
-                maxLength: 100,
-            },
-            isValid: true,
-            validationMessage: '',
-            value: '',
-        }
     });
 
     const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState(null);
 
     const handleCloseSnackbar = () => {
         setOpenSnackbar(false);
-    }
-
-    const handleOpenSnackbar = () => {
-        setOpenSnackbar(true);
+        setSnackbarMessage(null);
     }
 
     useEffect(() => {
@@ -68,18 +53,12 @@ const EditTopic = (props) => {
         setStateInputs(prevState => {
             return {
                 ...prevState,
-                title: {
-                    ...prevState.title,
+                email: {
+                    ...prevState.email,
                     isValid: false,
                     validationMessage: '',
                     value: '',
                 },
-                notes: {
-                    ...prevState.notes,
-                    isValid: true,
-                    validationMessage: '',
-                    value: '',
-                }
             }
         })
     }
@@ -88,34 +67,36 @@ const EditTopic = (props) => {
         setStateInputs(prevState => {
             return {
                 ...prevState,
-                title: {
-                    ...prevState.title,
-                    value: props.topic.name,
+                email: {
+                    ...prevState.email,
+                    value: '',
                 },
-                notes: {
-                    ...prevState.notes,
-                    value: props.topic.note,
-                }
             }
         })
     }
 
-    const editTopicHandler = () => {
-        const updateTopic = {
-            _id: props.topic._id,
-            name: stateInputs.title.value,
-            note: stateInputs.notes.value,
-            date: new Date().toLocaleDateString(),
+    const shareTopicHandler = () => {
+        const newMemberData = {
+            currentMembers: props.topic.membersId,
+            email: stateInputs.email.value,
         }
 
-        //close dialog
         props.handleClose();
+        startShareTopic(props.topic._id, newMemberData);
 
-        //send patch request to api
-        props.startEditingTopic(updateTopic);
+    }
 
-        //update state
-        props.finishEditingTopic(updateTopic, handleOpenSnackbar);
+    const startShareTopic = (topicId, newMemberData) => {
+        axios.patch('http://localhost:4000/topics/single/share/' + topicId, newMemberData)
+            .then(response => {
+                setOpenSnackbar(true);
+                setSnackbarMessage('Topic shared successfully');
+            })
+            .catch(err => {
+                console.log(err);
+                setOpenSnackbar(true);
+                setSnackbarMessage(err.response.data.message);
+            });
     }
 
     const onInputHandler = (inputName, event) => {
@@ -166,37 +147,29 @@ const EditTopic = (props) => {
                 open={props.open}
                 TransitionComponent={Transition}
                 keepMounted
-                maxWidth={'xs'}
+                maxWidth={'sm'}
                 onClose={props.handleClose}
                 aria-labelledby="alert-dialog-slide-title"
                 aria-describedby="alert-dialog-slide-description"
             >
                 <div className={classes.dialogColorHat}></div>
-                <DialogTitle id="alert-dialog-slide-title" className={classes.topicTitle}>{"Edit Topic"}</DialogTitle>
+                <DialogTitle id="alert-dialog-slide-title" className={classes.topicTitle}>{"Share Topic"}</DialogTitle>
                 <DialogContent>
                     {inputs}
                 </DialogContent>
                 <DialogActions>
-                    <Button className={classes.closeBtn} onClick={props.handleClose}>Disagree</Button>
-                    <Button disabled={!fieldsIsValid} className={classes.agreeBtn} onClick={editTopicHandler}>Agree</Button>
+                    <Button className={classes.closeBtn} onClick={props.handleClose}>Cancel</Button>
+                    <Button disabled={!fieldsIsValid} className={classes.agreeBtn} onClick={shareTopicHandler}>Share</Button>
                 </DialogActions>
             </Dialog>
-
             <Snackbar
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
                 open={openSnackbar}
                 onClose={handleCloseSnackbar}
-                message={'Topic was edited'}
+                message={snackbarMessage}
             />
         </React.Fragment>
     )
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        startEditingTopic: (topic) => { dispatch(editTopicAction(topic)) },
-        finishEditingTopic: (topic, handleOpenSnackbar) => { dispatch(editTopicActionCreator(topic, handleOpenSnackbar)) }
-    }
-}
-
-export default connect(null, mapDispatchToProps)(EditTopic);
+export default ShareTopic;

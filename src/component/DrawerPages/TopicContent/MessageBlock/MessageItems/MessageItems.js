@@ -27,8 +27,9 @@ const MessageItems = (props) => {
     useEffect(() => {
         let observer = new IntersectionObserver(function (entries) {
             if (entries[0].isIntersecting === true) {
-                if (!props.fetching)
+                if (!props.fetching){
                     props.loadMessagesHistory();
+                }
             }
         }, { threshold: [1] });
 
@@ -40,7 +41,7 @@ const MessageItems = (props) => {
         <List className={classes.messagesList}>
             <li
                 ref={(node) => { topRef = node }}
-                style={{ textAlign: 'center', padding: '30px 0', }}
+                className={props.fetching ? classes.topLiFetching : null}
             >
                 {props.fetching ? <CircularProgress /> : null}
             </li>
@@ -60,6 +61,7 @@ const MessageItems = (props) => {
                                         {
                                             textAlign: 'center',
                                             color: 'grey',
+                                            paddingTop: '20px',
                                         }
                                     }>{shownTimeString}</li>
                                 <MessageItem message={item} />

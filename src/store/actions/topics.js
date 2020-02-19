@@ -22,14 +22,17 @@ export const getTopicsActionCreator = (topics, socket) => {
     }
 }
 
-export const createTopicActionCreator = (topic) => {
+export const createTopicActionCreator = (topic, socket) => {
     return {
         type: actionTypes.ADD_TOPIC,
-        topic: topic
+        topic: topic,
+        socket: socket,
     }
 }
 
-export const editTopicActionCreator = (topic) => {
+export const editTopicActionCreator = (topic, handleOpenSnackbar) => {
+    handleOpenSnackbar();
+
     return {
         type: actionTypes.EDIT_TOPIC,
         topic: topic
@@ -40,6 +43,14 @@ export const setCurrentTopicActionCreator = (topicId) => {
     return {
         type: actionTypes.SET_CURRENT_TOPIC,
         topicId: topicId
+    }
+}
+
+export const leaveTopicActionCreator = (topicId, socket) => {
+    return {
+        type: actionTypes.DELETE_TOPIC,
+        topicId: topicId, 
+        socket: socket,
     }
 }
 
@@ -59,14 +70,15 @@ export const getTopicsAction = (socket) => {
     }
 }
 
-export const createTopicAction = (topic) => {
+export const createTopicAction = (topic, socket, handleOpenSnackbar) => {
     return (dispatch, getState) => {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + getState().auth.token;
         axios.post('http://localhost:4000/topics', topic)
-        .then(topic => {
-            dispatch(createTopicActionCreator(topic.data));
-        })
-        .catch(error => dispatch(errorActionCreator()))
+            .then(topic => {
+                dispatch(createTopicActionCreator(topic.data, socket));
+                handleOpenSnackbar();
+            })
+            .catch(error => dispatch(errorActionCreator()))
     }
 }
 
@@ -79,6 +91,20 @@ export const editTopicAction = (topic) => {
 
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + getState().auth.token;
         axios.patch('http://localhost:4000/topics/single/' + topic._id, updatedData)
-        .catch(error => dispatch(errorActionCreator()))
+            .catch(error => dispatch(errorActionCreator()))
+    }
+}
+
+export const leaveTopicAction = (topicId, handleOpenSnackbar, socket) => {
+    return (dispatch, getState) => {
+        const userId = getState().auth.id
+
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + getState().auth.token;
+        axios.post('http://localhost:4000/topics/single/leave/' + topicId, { userId })
+            .then(res => {
+                dispatch(leaveTopicActionCreator(topicId, socket));
+                handleOpenSnackbar();
+            })
+            .catch(error => dispatch(errorActionCreator()))
     }
 }

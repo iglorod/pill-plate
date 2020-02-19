@@ -50,12 +50,12 @@ export const finishSendingMessageActionCreator = () => {
     }
 }
 
-export const sendTextMessageAction = (message, socket) => {
+export const sendTextMessageAction = (message, socket, messageType) => {
     return (dispatch, getState) => {
         const messageData = {
             creatorId: message.sender,
             text: message.text,
-            type: messageTypes.TEXT,
+            type: messageType,
         }
 
         const topicId = getState().tpc.openedTopicId;
@@ -101,7 +101,6 @@ export const sendFileMessageAction = (message, socket, changeProgress) => {
             onUploadProgress: progressEvent => {
                 const progress = Math.round(progressEvent.loaded / progressEvent.total * 100);
                 changeProgress(progress);
-                //console.log('Progress: ' + progress + '%');
             }
         })
             .then(message => {

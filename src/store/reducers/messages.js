@@ -27,7 +27,7 @@ const reducer = (state = initialState, action) => {
                 { ...action.message }
             ]
 
-            if (state.topics[action.message.topicId])
+            if (state.topics[action.message.topicId] && state.topics[action.message.topicId].messages)
                 topicMessages = [
                     ...state.topics[action.message.topicId].messages,
                     {
@@ -81,7 +81,7 @@ const reducer = (state = initialState, action) => {
                 ...action.messages
             ]
 
-            if (state.topics[action.topicId]) {
+            if (state.topics[action.topicId] && state.topics[action.topicId].messages) {
                 topicMessages = [
                     ...action.messages,
                     ...state.topics[action.topicId].messages,

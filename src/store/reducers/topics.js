@@ -39,8 +39,8 @@ const reducer = (state = initialState, action) => {
 
                 action.socket.emit('join-to-topic', item._id);  //subscribe user
                 return item;
-            });       
-                 
+            });
+
             return {
                 loading: false,
                 error: false,
@@ -50,7 +50,9 @@ const reducer = (state = initialState, action) => {
         }
 
         case actionTypes.ADD_TOPIC: {
-            const humanDate = new Date(action.topic.date * 1000).toLocaleDateString();  
+            const humanDate = new Date(action.topic.date * 1000).toLocaleDateString();
+
+            action.socket.emit('join-to-topic', action.topic._id);
 
             return {
                 ...state,
@@ -66,7 +68,7 @@ const reducer = (state = initialState, action) => {
 
         case actionTypes.EDIT_TOPIC: {
             const topics = state.topics.filter(item => item._id !== action.topic._id);
-          
+
             return {
                 ...state,
                 topics: [
@@ -80,6 +82,15 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 openedTopicId: action.topicId,
+            }
+        }
+
+        case actionTypes.DELETE_TOPIC: {
+            action.socket.emit('leave-the-topic', action.topicId);
+
+            return {
+                ...state,
+                topics: state.topics.filter(item => item._id !== action.topicId),
             }
         }
 
