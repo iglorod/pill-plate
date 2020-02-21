@@ -6,6 +6,7 @@ import { LinearProgress } from '@material-ui/core';
 import useStyles from './styles';
 import InputBlock from './InputBlock/InputBlock';
 import MessageBlock from './MessageBlock/MessageBlock';
+import ActionsBlock from './ActionsBlock/ActionsBlock';
 import { setCurrentTopicActionCreator } from '../../../store/actions/topics';
 
 const TopicContent = (props) => {
@@ -13,6 +14,41 @@ const TopicContent = (props) => {
 
     const [allowScrollToBtm, setAllowScrollToBtm] = useState(true);
     const [loadingFileProgress, setLoadingFileProgress] = useState(0);
+
+    const [editingMessage, setEditingMessage] = useState(null);
+
+    const [selectedMessagesId, setSelectedMessageId] = useState([]);
+
+    const [filter, setFilter] = useState({
+        files: false,
+        photos: false,
+        videos: false,
+        links: false,
+    });
+
+    const editingMessageHandler = () => {
+        if (selectedMessagesId.length === 1)
+            setEditingMessage(selectedMessagesId[0]);
+    }
+
+    const changeSelectedMessage = (messageId) => {
+        if (selectedMessagesId.includes(messageId)) {
+            const newCollection = selectedMessagesId.filter(item => item !== messageId);
+            setSelectedMessageId([...newCollection]);
+        }
+        else {
+            const newCollection = [...selectedMessagesId];
+            newCollection.push(messageId);
+            setSelectedMessageId([...newCollection]);
+        }
+
+        setEditingMessage(null);
+    }
+
+    const clearSelectedMessages = () => {
+        setSelectedMessageId([]);
+        setEditingMessage(null);
+    }
 
     const changeProgress = (newProgress) => {
         setLoadingFileProgress(newProgress);
@@ -38,7 +74,7 @@ const TopicContent = (props) => {
         >
             {props.savingMessages
                 ? <LinearProgress variant="determinate" value={loadingFileProgress} />
-            : null}
+                : null}
         </li>
     );
 
@@ -53,16 +89,27 @@ const TopicContent = (props) => {
                 {({ getRootProps }) => (
                     <section className={classes.dropSection}>
                         <div {...getRootProps()} className={classes.dropArea}>
+                            <ActionsBlock
+                                selectedMessagesId={selectedMessagesId}
+                                editingMessageStart={editingMessageHandler}
+                                clearSelectedMessages={clearSelectedMessages} 
+                                filter={filter} 
+                                setFilter={setFilter} />
                             <MessageBlock
                                 scrollToEl={scrollToEl}
                                 scrollToBottom={scrollToBottom}
                                 allowScrollToBtm={allowScrollToBtm}
-                                setAllowScrollToBtm={setAllowScrollToBtm} 
-                                loadingFileProgress={loadingFileProgress} />
+                                setAllowScrollToBtm={setAllowScrollToBtm}
+                                loadingFileProgress={loadingFileProgress}
+                                changeSelectedMessage={changeSelectedMessage}
+                                selectedMessagesId={selectedMessagesId} 
+                                filter={filter} />
                             <InputBlock
                                 socketRoom={roomName}
                                 setAllowScrollToBtm={setAllowScrollToBtm}
-                                changeProgress={changeProgress} />
+                                changeProgress={changeProgress}
+                                editingMessage={editingMessage}
+                                clearSelectedMessages={clearSelectedMessages} />
                         </div>
                     </section>
                 )}

@@ -43,7 +43,7 @@ const ActionSection = (props) => {
             </div>
 
             <div style={{ marginLeft: '20px' }}>
-                <Button className={classes.sendBth} component="span" onClick={props.sendMessage}>SEND</Button>
+                <Button className={classes.sendBth} component="span" onClick={props.sendOrEditMessage}>SEND</Button>
             </div>
         </section>
     )

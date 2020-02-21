@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { TextField, InputAdornment, IconButton, Zoom } from '@material-ui/core';
 import 'emoji-mart/css/emoji-mart.css'
 import { Picker } from 'emoji-mart'
@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import useStyles from '../styles';
 import './InputBlock.css';
 import ActionSection from './ActionSection/ActionSection';
-import { sendTextMessageAction } from '../../../../store/actions/messages';
+import { sendTextMessageAction, editMessageAction } from '../../../../store/actions/messages';
 import * as messageTypes from '../../../../utility/message-types';
 
 const getFreqSmiles = () => {
@@ -46,9 +46,22 @@ const InputBlock = (props) => {
 
     const [freqSmiles, setFreqSmiles] = useState([]);
 
+    const inputRef = useRef(null);
+
     useEffect(() => {
         setFreqSmiles([...getFreqSmiles()]);
     }, []);
+
+    useEffect(() => {
+        if (!props.editingMessage) return;
+        const message = props.topic.messages.find(item => item._id === props.editingMessage);
+        setTextAreaValue(message.text);
+        focusInput();
+    }, [props.editingMessage])
+
+    const focusInput = () => {
+        inputRef.current.focus();
+    }
 
     const onInputChange = (event) => {
         const newValue = event.target.value;
@@ -57,12 +70,13 @@ const InputBlock = (props) => {
 
     const addNewEmoji = (emoji) => {
         setTextAreaValue(prevState => prevState + emoji.native);
-
+        focusInput();
         setFreqSmiles(prevState => addNewSmileToFreq([...prevState], emoji.id));
     }
 
     const addFreqEmoji = (emoji) => {
-        setTextAreaValue(prevState => prevState + emoji.native);
+        setTextAreaValue(prevState => prevState + emoji.native);    
+        focusInput();
     }
 
     const handleClickShowSmiles = () => {
@@ -72,12 +86,17 @@ const InputBlock = (props) => {
     const handleEnterKeyPress = (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
-            sendMessage();
+            sendOrEditMessage();
         }
+    }
+
+    const sendOrEditMessage = () => {
+        props.editingMessage ? editMessage() : sendMessage();
     }
 
     const sendMessage = () => {
         if (textAreaValue === '') return;
+
         const messageData = {
             text: textAreaValue,
             sender: props.userId
@@ -93,6 +112,16 @@ const InputBlock = (props) => {
 
         setTextAreaValue('');
     }
+
+    const editMessage = () => {
+        if (textAreaValue === '') return;
+
+        props.editMessage({ text: textAreaValue }, props.socket, props.editingMessage);
+        setTextAreaValue('');
+        props.clearSelectedMessages();
+    }
+
+    const smileLostFocusHandler = () => setShowSmiles(false);
 
     return (
         <div className={classes.inputBlock}>
@@ -111,6 +140,8 @@ const InputBlock = (props) => {
                     className={classes.textArea}
                     fullWidth
                     multiline
+                    autoFocus 
+                    inputRef={inputRef}
                     rows={2}
                     rowsMax={4}
                     placeholder={'Start to write...'}
@@ -123,7 +154,7 @@ const InputBlock = (props) => {
                     InputProps={{
                         className: classes.inputProp,
                         endAdornment: (
-                            <InputAdornment position="end" className={classes.addSmileBlock}>
+                            <InputAdornment position="end" className={classes.addSmileBlock} onBlur={smileLostFocusHandler}>
                                 <IconButton
                                     aria-label="toggle password visibility"
                                     onClick={handleClickShowSmiles}
@@ -143,9 +174,10 @@ const InputBlock = (props) => {
             <ActionSection
                 smiles={freqSmiles}
                 addEmoji={addFreqEmoji}
-                sendMessage={sendMessage}
+                sendOrEditMessage={sendOrEditMessage}
                 setAllowScrollToBtm={props.setAllowScrollToBtm}
                 changeProgress={props.changeProgress}
+                focusInput={focusInput}
             />
         </div>
     )
@@ -155,12 +187,14 @@ const mapStateToProps = (state) => {
     return {
         userId: state.auth.id,
         socket: state.sckt.socket,
+        topic: state.msg.topics[state.tpc.openedTopicId],
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         sendTextMessage: (message, socket, messageType) => { dispatch(sendTextMessageAction(message, socket, messageType)) },
+        editMessage: (message, socket, editableMessageId) => { dispatch(editMessageAction(message, socket, editableMessageId)) },
     }
 }
 

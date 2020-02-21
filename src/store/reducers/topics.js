@@ -67,12 +67,16 @@ const reducer = (state = initialState, action) => {
         }
 
         case actionTypes.EDIT_TOPIC: {
+            const updateTopic = state.topics.filter(item => item._id === action.topic._id);
             const topics = state.topics.filter(item => item._id !== action.topic._id);
 
             return {
                 ...state,
                 topics: [
-                    { ...action.topic },
+                    {
+                        ...updateTopic[0],
+                        ...action.topic
+                    },
                     ...topics,
                 ]
             }

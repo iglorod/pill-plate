@@ -64,7 +64,7 @@ const reducer = (state = initialState, action) => {
         }
 
         case actionTypes.FETCH_MESSAGES: {
-            if (action.messages.length === 0){
+            if (action.messages.length === 0) {
                 return {
                     ...state,
                     topics: {
@@ -98,6 +98,45 @@ const reducer = (state = initialState, action) => {
                             ...topicMessages,
                         ],
                         allIsFetched: false,
+                    }
+                }
+            }
+        }
+
+        case actionTypes.EDIT_MESSAGE: {
+            const topicId = action.message.topicId;
+
+            const topicMessages = state.topics[topicId].messages.map(message => {
+                if (message._id === action.message._id) {
+                    message.text = action.message.text;
+                }
+                return message;
+            })
+
+            return {
+                ...state,
+                topics: {
+                    ...state.topics,
+                    [topicId]: {
+                        ...state.topics[topicId],
+                        messages: [
+                            ...topicMessages,
+                        ],
+                    }
+                }
+            }
+        }
+
+        case actionTypes.REMOVE_MESSAGE: {
+            const topicId = action.message.topicId;
+
+            return {
+                ...state,
+                topics: {
+                    ...state.topics,
+                    [topicId]: {
+                        ...state.topics[topicId],
+                        messages: state.topics[topicId].messages.filter(message => message._id !== action.message._id),
                     }
                 }
             }

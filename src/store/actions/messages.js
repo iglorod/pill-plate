@@ -50,6 +50,20 @@ export const finishSendingMessageActionCreator = () => {
     }
 }
 
+export const editRecivedMessageActionCreator = (message) => {
+    return {
+        type: actionTypes.EDIT_MESSAGE,
+        message: message,
+    }
+}
+
+export const removeRecivedMessageActionCreator = (message) => {
+    return {
+        type: actionTypes.REMOVE_MESSAGE,
+        message: message,
+    }
+}
+
 export const sendTextMessageAction = (message, socket, messageType) => {
     return (dispatch, getState) => {
         const messageData = {
@@ -129,3 +143,32 @@ export const fetchMessagesAction = (skip, limit, topicId) => {
             });
     }
 }
+
+export const editMessageAction = (message, socket, editableMessageId) => {
+    return (dispatch, getState) => {
+        const topicId = getState().tpc.openedTopicId;
+
+        axios.patch('http://localhost:4000/topic/messages/single/' + editableMessageId, message)
+            .then(message => {
+                socket.emit('edit-message', topicId, message.data);
+            })
+            .catch(err => {
+                dispatch(errorActionCreator(err));
+            });
+    }
+}
+
+export const removeMessageAction = (messageId, socket) => {
+    return (dispatch, getState) => {
+        const topicId = getState().tpc.openedTopicId;
+
+        axios.delete('http://localhost:4000/topic/messages/single/' + messageId)
+            .then(message => {
+                socket.emit('delete-message', topicId, message.data);
+            })
+            .catch(err => {
+                dispatch(errorActionCreator(err));
+            });
+    }
+}
+

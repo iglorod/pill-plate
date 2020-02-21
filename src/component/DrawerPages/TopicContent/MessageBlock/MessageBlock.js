@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import useStyles from '../styles';
@@ -72,7 +72,10 @@ const MessageBlock = (props) => {
             loadMessagesHistory={loadMessagesHistory}
             allowScrollToBtm={props.allowScrollToBtm}
             setAllowScrollToBtm={props.setAllowScrollToBtm}
-            loadingFileProgress={props.loadingFileProgress} />
+            loadingFileProgress={props.loadingFileProgress} 
+            changeSelectedMessage={props.changeSelectedMessage}
+            selectedMessagesId={props.selectedMessagesId} 
+            filter={props.filter} />
     }
 
     return (

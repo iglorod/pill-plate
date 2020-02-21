@@ -5,6 +5,18 @@ import { connect } from 'react-redux';
 import MessageItem from './MessageItem/MessageItem';
 import useStyles from '../../styles';
 import { findDOMNode } from 'react-dom';
+import * as messageTypes from '../../../../../utility/message-types';
+
+const filterCheck = (message, filter) => {
+    if (!filter.photos && !filter.links && !filter.videos && !filter.files) return true;
+
+    if (message.type === messageTypes.IMAGE && filter.photos === true) return true;
+    if (message.type === messageTypes.LINK && filter.links === true) return true;
+    if (message.type === messageTypes.VIDEO && filter.videos === true) return true;
+    if (message.type === messageTypes.FILE && filter.files === true) return true;
+
+    return false;
+}
 
 const MessageItems = (props) => {
     const classes = useStyles();
@@ -27,7 +39,7 @@ const MessageItems = (props) => {
     useEffect(() => {
         let observer = new IntersectionObserver(function (entries) {
             if (entries[0].isIntersecting === true) {
-                if (!props.fetching){
+                if (!props.fetching) {
                     props.loadMessagesHistory();
                 }
             }
@@ -47,6 +59,8 @@ const MessageItems = (props) => {
             </li>
             {
                 props.topics[props.currTopicId].messages.map((item, index) => {
+                    if (!filterCheck(item, props.filter)) return null;
+
                     const currentMessageDate = new Date(item.date * 1000).toLocaleDateString();
 
                     if (lastMessageDate !== currentMessageDate) {
@@ -64,7 +78,10 @@ const MessageItems = (props) => {
                                             paddingTop: '20px',
                                         }
                                     }>{shownTimeString}</li>
-                                <MessageItem message={item} />
+                                <MessageItem
+                                    message={item}
+                                    selectedMessagesId={props.selectedMessagesId}
+                                    changeSelectedMessage={props.changeSelectedMessage.bind(this, item._id)} />
                             </React.Fragment>
                         )
                     }
@@ -79,7 +96,9 @@ const MessageItems = (props) => {
                             key={item._id}
                             message={item}
                             prevType={prevType}
-                            prevAuthor={prevAuthor} />
+                            prevAuthor={prevAuthor}
+                            selectedMessagesId={props.selectedMessagesId}
+                            changeSelectedMessage={props.changeSelectedMessage.bind(this, item._id)} />
                     )
                 })
             }

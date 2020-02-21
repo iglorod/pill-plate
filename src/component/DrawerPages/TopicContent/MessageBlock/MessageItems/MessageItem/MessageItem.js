@@ -4,8 +4,10 @@ import {
     ListItemAvatar,
     Avatar,
     ListItemSecondaryAction,
-    Typography
+    Typography,
+    ListItemIcon
 } from '@material-ui/core';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 import useStyles from '../../../styles';
 import * as messageTypes from '../../../../../../utility/message-types';
@@ -31,6 +33,18 @@ const displayedDataByType = (message, show) => {
     return <VideoItem message={message} showName={show} />
 }
 
+const setListItemClasses = (classes, showAuthor, selectedMessages, messageId) => {
+    const listClasses = [classes.messageLiItem];
+    if (!showAuthor) {
+        listClasses.push(classes.messageLiWithAuthor);
+    }
+    if (selectedMessages.includes(messageId)) {
+        listClasses.push(classes.messageLiSelected);
+    }
+
+    return listClasses;
+}
+
 const MessageItem = (props) => {
     const classes = useStyles();
     const humanDate = new Date(props.message.date * 1000).toLocaleTimeString();
@@ -46,15 +60,23 @@ const MessageItem = (props) => {
 
     const dataComponent = displayedDataByType(props.message, showAuthor);
 
+    const listClasses = setListItemClasses(classes, showAuthor, props.selectedMessagesId, props.message._id);
+
     return (
         <ListItem
             alignItems="flex-start"
-            className={showAuthor ? null : classes.messageLiElement}
-            >
+            className={listClasses.join(' ')}
+            onClick={props.changeSelectedMessage}
+        >
+            {(props.selectedMessagesId.includes(props.message._id))
+                ? <ListItemIcon className={classes.isChecked}>
+                    <CheckCircleIcon />
+                </ListItemIcon>
+                : null}
             <ListItemAvatar>
                 {
                     showAuthor
-                        ? <Avatar alt="LETTER">{props.message.creatorId.email.slice(0, 2)}</Avatar>
+                        ? <Avatar alt="LETTER" className={classes.avatarStyle}>{props.message.creatorId.email.slice(0, 2)}</Avatar>
                         : <div></div>
                 }
             </ListItemAvatar>

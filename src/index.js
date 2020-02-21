@@ -24,6 +24,7 @@ const reducers = combineReducers({
 const theme = createMuiTheme({
     palette: {
         primary: {
+            light: '#ffec92',
             main: '#FFE66D',
             dark: '#F5B82E'
         },

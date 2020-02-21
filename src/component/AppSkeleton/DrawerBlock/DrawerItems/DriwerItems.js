@@ -5,6 +5,7 @@ import NoteRoundedIcon from '@material-ui/icons/NoteSharp';
 import PhotoCameraRoundedIcon from '@material-ui/icons/PhotoCameraSharp';
 import DescriptionRoundedIcon from '@material-ui/icons/DescriptionSharp';
 import MenuOpenIcon from '@material-ui/icons/MenuOpenSharp';
+import VideoLibraryRoundedIcon from '@material-ui/icons/VideoLibrarySharp';
 import DeleteRoundedIcon from '@material-ui/icons/DeleteSharp';
 import MenuIcon from '@material-ui/icons/MenuSharp';
 import { IconButton, ListItemSecondaryAction } from '@material-ui/core';
@@ -63,6 +64,7 @@ const DriwerItems = () => {
                         <List component="div" disablePadding>
                             <DrawerItem text='Links' to={'/pulp/topics/links'} icon={<LinkRoundedIcon />} isNested />
                             <DrawerItem text='Photos' to={'/pulp/topics/photos'} icon={<PhotoCameraRoundedIcon />} isNested />
+                            <DrawerItem text='Videos' to={'/pulp/topics/videos'} icon={<VideoLibraryRoundedIcon />} isNested />
                             <DrawerItem text='Files' to={'/pulp/topics/files'} icon={<DescriptionRoundedIcon />} isNested />
                             <DrawerItem text='Notes' to={'/pulp/topics/notes'} icon={<NoteRoundedIcon />} isNested />
                         </List>

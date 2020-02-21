@@ -7,7 +7,11 @@ import useStyles from '../styles';
 import Topic from './Topic/Topic';
 import EditTopicDialog from '../../../UI/Dialog/EditTopic';
 import ShareTopicDialog from '../../../UI/Dialog/ShareTopic';
-import { saveMessageActionCreator } from '../../../../store/actions/messages';
+import {
+    saveMessageActionCreator,
+    editRecivedMessageActionCreator,
+    removeRecivedMessageActionCreator
+} from '../../../../store/actions/messages';
 
 const TopicsList = (props) => {
     const classes = useStyles();
@@ -18,13 +22,20 @@ const TopicsList = (props) => {
     const [selectedTopicData, setSelectedTopicData] = useState(null);
 
     useEffect(() => {
-
         if (!props.wasFetched) {
             props.getTopicsList(props.socket);
 
             props.socket.on('recive-message', message => {
                 props.reciveMessage(message);
             });
+
+            props.socket.on('recive-edited-message', message => {
+                props.changeMessage(message);
+            })
+
+            props.socket.on('recive-delete-message', message => {
+                props.deleteMessage(message);
+            })
         }
     }, [])
 
@@ -82,6 +93,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getTopicsList: (socket) => { dispatch(getTopicsAction(socket)) },
         reciveMessage: (message) => { dispatch(saveMessageActionCreator(message)) },
+        changeMessage: (message) => { dispatch(editRecivedMessageActionCreator(message)) },
+        deleteMessage: (message) => { dispatch(removeRecivedMessageActionCreator(message)) }
     }
 }
 
