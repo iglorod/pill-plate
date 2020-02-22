@@ -190,7 +190,7 @@ const style = makeStyles(theme => ({
     },
     topLiFetching: {
         textAlign: 'center',
-        padding: '30px 0',
+        paddingTop: '30px',
     },
     actionsBlock: {
         position: 'absolute',

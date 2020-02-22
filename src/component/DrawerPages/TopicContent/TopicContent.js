@@ -8,6 +8,7 @@ import InputBlock from './InputBlock/InputBlock';
 import MessageBlock from './MessageBlock/MessageBlock';
 import ActionsBlock from './ActionsBlock/ActionsBlock';
 import { setCurrentTopicActionCreator } from '../../../store/actions/topics';
+import { sendFileMessageAction } from '../../../store/actions/messages';
 
 const TopicContent = (props) => {
     const classes = useStyles();
@@ -54,38 +55,26 @@ const TopicContent = (props) => {
         setLoadingFileProgress(newProgress);
     }
 
+    const dispatchFiles = (files) => {
+        files.map(file => {
+            const messageData = {
+                file: file,
+                sender: props.usedId,
+            }
+            setAllowScrollToBtm(true);
+            return props.uploadFile(messageData, props.socket, changeProgress);
+        });
+    }
+
     const roomName = props.match.params.id;
 
     useEffect(() => {
         props.setCurrentTopic(roomName);
     }, [])
 
-    useEffect(() => {
-        if (props.savingMessages === true) scrollToBottom();
-        else changeProgress(0);
-    }, [props.savingMessages])
-
-    let bottomEl = null;
-
-    const scrollToEl = (
-        <li
-            style={{ textAlign: 'center', padding: '0 10%' }}
-            ref={(el) => bottomEl = el}
-        >
-            {props.savingMessages
-                ? <LinearProgress variant="determinate" value={loadingFileProgress} />
-                : null}
-        </li>
-    );
-
-    const scrollToBottom = () => {
-        if (bottomEl === null) return;
-        bottomEl.scrollIntoView();
-    }
-
     return (
         <div className={classes.root}>
-            <Dropzone onDrop={acceptedFiles => console.log(acceptedFiles)}>
+            <Dropzone onDrop={acceptedFiles => dispatchFiles(acceptedFiles, props.imageDrop)}>
                 {({ getRootProps }) => (
                     <section className={classes.dropSection}>
                         <div {...getRootProps()} className={classes.dropArea}>
@@ -96,18 +85,18 @@ const TopicContent = (props) => {
                                 filter={filter} 
                                 setFilter={setFilter} />
                             <MessageBlock
-                                scrollToEl={scrollToEl}
-                                scrollToBottom={scrollToBottom}
                                 allowScrollToBtm={allowScrollToBtm}
                                 setAllowScrollToBtm={setAllowScrollToBtm}
                                 loadingFileProgress={loadingFileProgress}
                                 changeSelectedMessage={changeSelectedMessage}
                                 selectedMessagesId={selectedMessagesId} 
+                                changeProgress={changeProgress}
                                 filter={filter} />
                             <InputBlock
                                 socketRoom={roomName}
                                 setAllowScrollToBtm={setAllowScrollToBtm}
                                 changeProgress={changeProgress}
+                                dispatchFiles={dispatchFiles}
                                 editingMessage={editingMessage}
                                 clearSelectedMessages={clearSelectedMessages} />
                         </div>
@@ -122,12 +111,15 @@ const mapStateToProps = (state) => {
     return {
         openLoading: state.msg.loading,
         savingMessages: state.msg.savingMessages,
+        socket: state.sckt.socket,
+        usedId: state.auth.id,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         setCurrentTopic: (topicId) => { dispatch(setCurrentTopicActionCreator(topicId)) },
+        uploadFile: (messageData, socket, changeProgress) => { dispatch(sendFileMessageAction(messageData, socket, changeProgress)) }
     }
 }
 

@@ -14,12 +14,12 @@ const ActionSection = (props) => {
 
             <DropFile
                 icon={<Note className={classes.addFileBtn} />} 
-                setAllowScrollToBtm={props.setAllowScrollToBtm} 
-                changeProgress={props.changeProgress} />
+                changeProgress={props.changeProgress}
+                dispatchFiles={props.dispatchFiles} />
             <DropFile
                 icon={<PhotoCamera className={classes.addImageBtn} />}
-                setAllowScrollToBtm={props.setAllowScrollToBtm}
                 changeProgress={props.changeProgress}
+                dispatchFiles={props.dispatchFiles}
                 imageDrop />
 
             <div style={{ overflow: 'hidden', display: 'flex', width: '100%', }}>

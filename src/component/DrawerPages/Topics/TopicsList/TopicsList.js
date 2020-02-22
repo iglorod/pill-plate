@@ -8,7 +8,7 @@ import Topic from './Topic/Topic';
 import EditTopicDialog from '../../../UI/Dialog/EditTopic';
 import ShareTopicDialog from '../../../UI/Dialog/ShareTopic';
 import {
-    saveMessageActionCreator,
+    saveMessageAction,
     editRecivedMessageActionCreator,
     removeRecivedMessageActionCreator
 } from '../../../../store/actions/messages';
@@ -92,7 +92,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getTopicsList: (socket) => { dispatch(getTopicsAction(socket)) },
-        reciveMessage: (message) => { dispatch(saveMessageActionCreator(message)) },
+        reciveMessage: (message) => { dispatch(saveMessageAction(message)) },
         changeMessage: (message) => { dispatch(editRecivedMessageActionCreator(message)) },
         deleteMessage: (message) => { dispatch(removeRecivedMessageActionCreator(message)) }
     }

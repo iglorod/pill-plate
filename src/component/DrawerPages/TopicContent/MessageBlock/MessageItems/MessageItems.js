@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { List, CircularProgress } from '@material-ui/core';
+import { List, CircularProgress, LinearProgress } from '@material-ui/core';
 import { connect } from 'react-redux';
 
 import MessageItem from './MessageItem/MessageItem';
@@ -20,27 +20,13 @@ const filterCheck = (message, filter) => {
 
 const MessageItems = (props) => {
     const classes = useStyles();
-
-    useEffect(() => {
-        const lastMessageAuthorId = props.topics[props.currTopicId].messages[props.topics[props.currTopicId].messages.length - 1].creatorId._id;
-        const lastMessageTopicId = props.topics[props.currTopicId].messages[props.topics[props.currTopicId].messages.length - 1].topicId;
-
-        if (lastMessageAuthorId === props.userId
-            && lastMessageTopicId === props.currTopicId
-            && props.allowScrollToBtm === true) {
-            setTimeout(() => {
-                props.scrollToBottom();
-                props.setAllowScrollToBtm(false);
-            }, 200);
-        }
-    }, [props.topics[props.currTopicId]]);
-
+    
     let topRef = null;
     useEffect(() => {
         let observer = new IntersectionObserver(function (entries) {
             if (entries[0].isIntersecting === true) {
                 if (!props.fetching) {
-                    props.loadMessagesHistory();
+                    props.fetchPreviousMessages();
                 }
             }
         }, { threshold: [1] });
@@ -50,10 +36,10 @@ const MessageItems = (props) => {
 
     let lastMessageDate = null;
     return (
-        <List className={classes.messagesList}>
+        <List className={[classes.messagesList, 'messages'].join(' ')}>
             <li
                 ref={(node) => { topRef = node }}
-                className={props.fetching ? classes.topLiFetching : null}
+                className={classes.topLiFetching}
             >
                 {props.fetching ? <CircularProgress /> : null}
             </li>
@@ -102,7 +88,11 @@ const MessageItems = (props) => {
                     )
                 })
             }
-            {props.scrollToEl}
+            <li style={{ textAlign: 'center', padding: '0 10%' }} className={'message'}>
+                {props.savingMessages
+                    ? <LinearProgress variant="determinate" value={props.loadingFileProgress} />
+                    : null}
+            </li>
         </List>
     )
 }
@@ -113,6 +103,7 @@ const mapStateToProps = (state) => {
         fetching: state.msg.fetchingMessages,
         userId: state.auth.id,
         currTopicId: state.tpc.openedTopicId,
+        savingMessages: state.msg.savingMessages,
     }
 }
 

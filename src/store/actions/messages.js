@@ -11,13 +11,6 @@ export const errorActionCreator = (error) => {
     }
 }
 
-export const saveMessageActionCreator = (message) => {
-    return {
-        type: actionTypes.MESSAGE_SAVE,
-        message: message,
-    }
-}
-
 export const startMessageFetchActionCreator = () => {
     return {
         type: actionTypes.START_MESSAGES_FETCHING,
@@ -27,6 +20,25 @@ export const startMessageFetchActionCreator = () => {
 export const finishMessageFetchActionCreator = () => {
     return {
         type: actionTypes.FINISH_MESSAGES_FETCHING,
+    }
+}
+
+export const startMessageReciveActionCreator = () => {
+    return {
+        type: actionTypes.START_MESSAGES_RECIVE,
+    }
+}
+
+export const finishMessageReciveActionCreator = () => {
+    return {
+        type: actionTypes.FINISH_MESSAGES_RECIVE,
+    }
+}
+
+export const saveMessageActionCreator = (message) => {
+    return {
+        type: actionTypes.MESSAGE_SAVE,
+        message: message,
     }
 }
 
@@ -127,16 +139,21 @@ export const sendFileMessageAction = (message, socket, changeProgress) => {
     }
 }
 
-export const fetchMessagesAction = (skip, limit, topicId) => {
+export const fetchMessagesAction = (data) => {
     return dispatch => {
         dispatch(startMessageFetchActionCreator());
 
-        const limitations = '?skip=' + skip + '&limit=' + limit;
+        const limitations = '?skip=' + data.skip + '&limit=' + data.limit;
 
-        axios.get('http://localhost:4000/topic/messages/' + topicId + limitations)
+        axios.get('http://localhost:4000/topic/messages/' + data.currTopicId + limitations)
             .then(messages => {
                 dispatch(finishMessageFetchActionCreator());
-                dispatch(fetchMessagesActionCreator(messages.data.reverse(), topicId));
+
+                if (messages.data.length < 15) data.setAllowToFetch(false);
+                dispatch(fetchMessagesActionCreator(messages.data.reverse(), data.currTopicId));
+
+                data.setSkip(prevState => prevState + 15);
+                data.resolve();
             })
             .catch(err => {
                 dispatch(errorActionCreator(err));
@@ -172,3 +189,10 @@ export const removeMessageAction = (messageId, socket) => {
     }
 }
 
+export const saveMessageAction = (message) => {
+    return dispatch => {
+        dispatch(startMessageReciveActionCreator());
+        dispatch(saveMessageActionCreator(message))
+        dispatch(finishMessageReciveActionCreator());
+    }
+}

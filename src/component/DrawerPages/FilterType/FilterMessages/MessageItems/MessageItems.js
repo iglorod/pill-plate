@@ -13,7 +13,7 @@ const MessageItems = (props) => {
         let observer = new IntersectionObserver(function (entries) {
             if (entries[0].isIntersecting === true) {
                 if (!props.fetching) {
-                    props.fetchFilterMessages(15);
+                    props.fetchPreviousMessages();
                 }
             }
         }, { threshold: [1] });
@@ -23,10 +23,10 @@ const MessageItems = (props) => {
 
     let lastMessageDate = null;
     return (
-        <List className={classes.messagesList}>
+        <List className={[classes.messagesList, 'messages'].join(' ')}>
             <li
                 ref={(node) => { topRef = node }}
-                className={props.fetching ? classes.topLiFetching : null}
+                className={classes.topLiFetching}
             >
                 {props.fetching ? <CircularProgress /> : null}
             </li>

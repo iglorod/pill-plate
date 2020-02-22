@@ -32,19 +32,10 @@ const style = makeStyles(theme => ({
         },
     },
     messagesBlock: {
-        height: '83%',
+        height: '100%',
         display: 'flex',
         justifyContent: 'flex-end',
         flexDirection: 'column',
-    },
-    inputBlock: {
-        height: '17%',
-        position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
-        padding: '0 ' + theme.spacing(2) + 'px',
-        paddingBottom: theme.spacing(0.5),
     },
     textArea: {
         "&::-webkit-scrollbar-track": {
@@ -139,7 +130,6 @@ const style = makeStyles(theme => ({
     },
     messagesList: {
         overflow: 'auto',
-        paddingTop: '57px',
         "&::-webkit-scrollbar-track": {
             borderRadius: '10px',
         },
@@ -190,7 +180,7 @@ const style = makeStyles(theme => ({
     },
     topLiFetching: {
         textAlign: 'center',
-        padding: '30px 0',
+        paddingTop: '30px',
     },
     actionsBlock: {
         position: 'absolute',

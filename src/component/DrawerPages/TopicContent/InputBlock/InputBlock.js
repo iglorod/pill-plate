@@ -175,8 +175,8 @@ const InputBlock = (props) => {
                 smiles={freqSmiles}
                 addEmoji={addFreqEmoji}
                 sendOrEditMessage={sendOrEditMessage}
-                setAllowScrollToBtm={props.setAllowScrollToBtm}
                 changeProgress={props.changeProgress}
+                dispatchFiles={props.dispatchFiles}
                 focusInput={focusInput}
             />
         </div>

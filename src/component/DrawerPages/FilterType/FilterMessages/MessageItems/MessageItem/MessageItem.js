@@ -33,25 +33,21 @@ const displayedDataByType = (message) => {
     return <VideoItem message={message} showName={true} />
 }
 
-const setListItemClasses = (classes, messageId) => {
-    const listClasses = [classes.messageLiItem];
-    listClasses.push(classes.messageLiWithAuthor);
-
-    return listClasses;
-}
-
 const MessageItem = (props) => {
     const classes = useStyles();
     const humanDate = new Date(props.message.date * 1000).toLocaleTimeString();
 
     const dataComponent = displayedDataByType(props.message);
 
-    const listClasses = setListItemClasses(classes, props.message._id);
+    const listClasses = [classes.messageLiItem, classes.messageLiWithAuthor];
 
     return (
         <ListItem
             alignItems="flex-start"
             className={listClasses.join(' ')}
+            ContainerProps={{
+                className: 'message'
+            }}
         >
             <ListItemAvatar>
                 <Avatar alt="LETTER" className={classes.avatarStyle}>{props.message.creatorId.email.slice(0, 2)}</Avatar>

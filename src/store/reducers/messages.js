@@ -2,7 +2,7 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
     savingMessages: false,
-    fetchingMessages: false,
+    recivingMessage: false,
     topics: {},
 }
 
@@ -19,6 +19,20 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 savingMessages: false,
+            }
+        }
+
+        case actionTypes.START_MESSAGES_RECIVE: {
+            return {
+                ...state,
+                recivingMessage: true,
+            }
+        }
+
+        case actionTypes.FINISH_MESSAGES_RECIVE: {
+            return {
+                ...state,
+                recivingMessage: false,
             }
         }
 
@@ -49,32 +63,9 @@ const reducer = (state = initialState, action) => {
             }
         }
 
-        case actionTypes.START_MESSAGES_FETCHING: {
-            return {
-                ...state,
-                fetchingMessages: true,
-            }
-        }
-
-        case actionTypes.FINISH_MESSAGES_FETCHING: {
-            return {
-                ...state,
-                fetchingMessages: false,
-            }
-        }
-
         case actionTypes.FETCH_MESSAGES: {
             if (action.messages.length === 0) {
-                return {
-                    ...state,
-                    topics: {
-                        ...state.topics,
-                        [action.topicId]: {
-                            ...state.topics[action.topicId],
-                            allIsFetched: true,
-                        }
-                    }
-                }
+                return state;
             }
 
             let topicMessages = [
@@ -97,7 +88,6 @@ const reducer = (state = initialState, action) => {
                         messages: [
                             ...topicMessages,
                         ],
-                        allIsFetched: false,
                     }
                 }
             }

@@ -67,6 +67,9 @@ const MessageItem = (props) => {
             alignItems="flex-start"
             className={listClasses.join(' ')}
             onClick={props.changeSelectedMessage}
+            ContainerProps={{
+                className: 'message'
+            }}
         >
             {(props.selectedMessagesId.includes(props.message._id))
                 ? <ListItemIcon className={classes.isChecked}>
