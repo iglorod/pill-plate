@@ -32,7 +32,7 @@ const EditTopic = (props) => {
                 isRequred: true,
                 maxLength: 20,
             },
-            isValid: false,
+            isValid: true,
             validationMessage: '',
             value: '',
         },
@@ -70,7 +70,7 @@ const EditTopic = (props) => {
                 ...prevState,
                 title: {
                     ...prevState.title,
-                    isValid: false,
+                    isValid: true,
                     validationMessage: '',
                     value: '',
                 },
@@ -157,6 +157,7 @@ const EditTopic = (props) => {
             />
         );
 
+        console.log(stateInputs[key].isValid);
         fieldsIsValid = stateInputs[key].isValid && fieldsIsValid;
     }
 

@@ -16,6 +16,12 @@ const reducer = (state = initialState, action) => {
             }
         }
 
+        case actionTypes.DISCONNECT_SOCKET: {
+            state.socket.close();
+
+            return { ...initialState }
+        }
+
         default: return state;
     }
 }

@@ -7,6 +7,7 @@ import useStyles from '../styles';
 import Topic from './Topic/Topic';
 import EditTopicDialog from '../../../UI/Dialog/EditTopic';
 import ShareTopicDialog from '../../../UI/Dialog/ShareTopic';
+import { setCurrentTopicActionCreator } from '../../../../store/actions/topics';
 import {
     saveMessageAction,
     editRecivedMessageActionCreator,
@@ -21,12 +22,15 @@ const TopicsList = (props) => {
 
     const [selectedTopicData, setSelectedTopicData] = useState(null);
 
+    const [newUnreadMessage, setNewUnreadMessage] = useState(null);
+
     useEffect(() => {
         if (!props.wasFetched) {
             props.getTopicsList(props.socket);
 
             props.socket.on('recive-message', message => {
                 props.reciveMessage(message);
+                setNewUnreadMessage(message);
             });
 
             props.socket.on('recive-edited-message', message => {
@@ -37,6 +41,8 @@ const TopicsList = (props) => {
                 props.deleteMessage(message);
             })
         }
+
+        props.setCurrentTopic(null);
     }, [])
 
     const edtiDialogOpen = (topic) => {
@@ -66,9 +72,11 @@ const TopicsList = (props) => {
                         props.topics.map((item, index) => {
                             return (
                                 <Topic
+                                    key={index}
                                     data={item}
                                     delay={index}
-                                    key={index}
+                                    userId={props.userId}
+                                    newUnreadMessage={newUnreadMessage}
                                     edtiDialogOpen={edtiDialogOpen.bind(this, item)}
                                     shareDialogOpen={shareDialogOpen.bind(this, item)}
                                 />
@@ -86,6 +94,7 @@ const mapStateToProps = (state) => {
         socket: state.sckt.socket,
         topics: state.tpc.topics,
         wasFetched: state.tpc.wasFetched,
+        userId: state.auth.id,
     }
 }
 
@@ -94,7 +103,8 @@ const mapDispatchToProps = (dispatch) => {
         getTopicsList: (socket) => { dispatch(getTopicsAction(socket)) },
         reciveMessage: (message) => { dispatch(saveMessageAction(message)) },
         changeMessage: (message) => { dispatch(editRecivedMessageActionCreator(message)) },
-        deleteMessage: (message) => { dispatch(removeRecivedMessageActionCreator(message)) }
+        deleteMessage: (message) => { dispatch(removeRecivedMessageActionCreator(message)) },
+        setCurrentTopic: (topicId) => { dispatch(setCurrentTopicActionCreator(topicId)) },
     }
 }
 

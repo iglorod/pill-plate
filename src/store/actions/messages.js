@@ -76,12 +76,19 @@ export const removeRecivedMessageActionCreator = (message) => {
     }
 }
 
+export const onLogoutMessagesClearActionCreator = () => {
+    return {
+        type: actionTypes.LOGOUT_MESSAGES,
+    }    
+}
+
 export const sendTextMessageAction = (message, socket, messageType) => {
     return (dispatch, getState) => {
         const messageData = {
             creatorId: message.sender,
             text: message.text,
             type: messageType,
+            date: Math.floor((new Date().getTime() / 1000)),
         }
 
         const topicId = getState().tpc.openedTopicId;
@@ -120,6 +127,7 @@ export const sendFileMessageAction = (message, socket, changeProgress) => {
         }
 
         formData.append('creatorId', message.sender);
+        formData.append('date', Math.floor((new Date().getTime() / 1000)));
 
         const topicId = getState().tpc.openedTopicId;
 
@@ -152,7 +160,7 @@ export const fetchMessagesAction = (data) => {
                 if (messages.data.length < 15) data.setAllowToFetch(false);
                 dispatch(fetchMessagesActionCreator(messages.data.reverse(), data.currTopicId));
 
-                data.setSkip(prevState => prevState + 15);
+                data.setSkip(prevState => prevState + messages.data.length);
                 data.resolve();
             })
             .catch(err => {
@@ -165,7 +173,7 @@ export const editMessageAction = (message, socket, editableMessageId) => {
     return (dispatch, getState) => {
         const topicId = getState().tpc.openedTopicId;
 
-        axios.patch('http://localhost:4000/topic/messages/single/' + editableMessageId, message)
+        axios.patch('http://localhost:4000/topic/messages/single/text/' + editableMessageId, message)
             .then(message => {
                 socket.emit('edit-message', topicId, message.data);
             })
@@ -196,3 +204,16 @@ export const saveMessageAction = (message) => {
         dispatch(finishMessageReciveActionCreator());
     }
 }
+
+export const readMessageAction = (userId, messageId) => {
+    return dispatch => {
+        axios.patch('http://localhost:4000/topic/messages/single/readers/' + messageId, { wasReadedBy: userId })
+            .then(message => {
+                dispatch(editRecivedMessageActionCreator(message.data));
+            })
+            .catch(err => {
+                dispatch(errorActionCreator(err));
+            })
+    }
+}
+

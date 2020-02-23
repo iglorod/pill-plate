@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Dropzone from 'react-dropzone';
 import { connect } from 'react-redux';
-import { LinearProgress } from '@material-ui/core';
 
 import useStyles from './styles';
 import InputBlock from './InputBlock/InputBlock';
@@ -13,7 +12,6 @@ import { sendFileMessageAction } from '../../../store/actions/messages';
 const TopicContent = (props) => {
     const classes = useStyles();
 
-    const [allowScrollToBtm, setAllowScrollToBtm] = useState(true);
     const [loadingFileProgress, setLoadingFileProgress] = useState(0);
 
     const [editingMessage, setEditingMessage] = useState(null);
@@ -59,9 +57,8 @@ const TopicContent = (props) => {
         files.map(file => {
             const messageData = {
                 file: file,
-                sender: props.usedId,
+                sender: props.userId,
             }
-            setAllowScrollToBtm(true);
             return props.uploadFile(messageData, props.socket, changeProgress);
         });
     }
@@ -74,27 +71,25 @@ const TopicContent = (props) => {
 
     return (
         <div className={classes.root}>
-            <Dropzone onDrop={acceptedFiles => dispatchFiles(acceptedFiles, props.imageDrop)}>
+            <Dropzone onDrop={acceptedFiles => { dispatchFiles(acceptedFiles, props.imageDrop) }}>
                 {({ getRootProps }) => (
                     <section className={classes.dropSection}>
                         <div {...getRootProps()} className={classes.dropArea}>
                             <ActionsBlock
                                 selectedMessagesId={selectedMessagesId}
                                 editingMessageStart={editingMessageHandler}
-                                clearSelectedMessages={clearSelectedMessages} 
-                                filter={filter} 
+                                clearSelectedMessages={clearSelectedMessages}
+                                filter={filter}
                                 setFilter={setFilter} />
                             <MessageBlock
-                                allowScrollToBtm={allowScrollToBtm}
-                                setAllowScrollToBtm={setAllowScrollToBtm}
                                 loadingFileProgress={loadingFileProgress}
                                 changeSelectedMessage={changeSelectedMessage}
-                                selectedMessagesId={selectedMessagesId} 
+                                selectedMessagesId={selectedMessagesId}
                                 changeProgress={changeProgress}
+                                userId={props.userId}
                                 filter={filter} />
                             <InputBlock
                                 socketRoom={roomName}
-                                setAllowScrollToBtm={setAllowScrollToBtm}
                                 changeProgress={changeProgress}
                                 dispatchFiles={dispatchFiles}
                                 editingMessage={editingMessage}
@@ -112,7 +107,7 @@ const mapStateToProps = (state) => {
         openLoading: state.msg.loading,
         savingMessages: state.msg.savingMessages,
         socket: state.sckt.socket,
-        usedId: state.auth.id,
+        userId: state.auth.id,
     }
 }
 

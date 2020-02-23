@@ -5,3 +5,9 @@ export const connectSocketActionCreator = () => {
         type: actionTypes.CONNECT_SOCKET,
     }
 }
+
+export const disconnectSocketActionCreator = () => {
+    return {
+        type: actionTypes.DISCONNECT_SOCKET,
+    }
+}

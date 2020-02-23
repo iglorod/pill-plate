@@ -7,7 +7,8 @@ import {
     Typography,
     ListItemIcon
 } from '@material-ui/core';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import { CheckCircle, FiberManualRecord } from '@material-ui/icons';
+import VisibilitySensor from 'react-visibility-sensor';
 
 import useStyles from '../../../styles';
 import * as messageTypes from '../../../../../../utility/message-types';
@@ -52,8 +53,9 @@ const MessageItem = (props) => {
     let showAuthor = false;
 
     if (
-        props.prevType !== props.message.type ||
-        props.prevAuthor !== props.message.creatorId._id
+        props.prevType !== props.message.type
+        || props.prevAuthor !== props.message.creatorId._id
+        || props.showAuthor
     ) {
         showAuthor = true;
     }
@@ -61,6 +63,12 @@ const MessageItem = (props) => {
     const dataComponent = displayedDataByType(props.message, showAuthor);
 
     const listClasses = setListItemClasses(classes, showAuthor, props.selectedMessagesId, props.message._id);
+
+    const isVisibleHandler = () => {
+        setTimeout(() => {
+            props.addToReaded(props.userId, props.message._id);
+        }, 500);
+    }
 
     return (
         <ListItem
@@ -71,11 +79,23 @@ const MessageItem = (props) => {
                 className: 'message'
             }}
         >
-            {(props.selectedMessagesId.includes(props.message._id))
-                ? <ListItemIcon className={classes.isChecked}>
-                    <CheckCircleIcon />
-                </ListItemIcon>
-                : null}
+            {
+                (props.selectedMessagesId.includes(props.message._id))
+                    ? <ListItemIcon className={classes.isChecked}>
+                        <CheckCircle />
+                    </ListItemIcon>
+                    : null
+            }
+
+            {
+                !props.message.wasReadedBy.includes(props.userId) ?
+                    <ListItemIcon className={classes.isChecked}>
+                        <VisibilitySensor onChange={isVisibleHandler}>
+                            <FiberManualRecord className={classes.notReadedDot} />
+                        </VisibilitySensor>
+                    </ListItemIcon>
+                    : null
+            }
             <ListItemAvatar>
                 {
                     showAuthor

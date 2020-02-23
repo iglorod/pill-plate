@@ -7,12 +7,18 @@ import useStyle from '../style';
 import AppBarLink from './AppBarLink/AppBarLink';
 import DrawerButton from './MenuButton/MenuButton';
 import { logoutActionCreator } from '../../../store/actions/authorization';
+import { onLogoutMessagesClearActionCreator } from '../../../store/actions/messages';
+import { disconnectSocketActionCreator } from '../../../store/actions/socket';
+import { onLogoutTopicsClearActionCreator } from '../../../store/actions/topics';
 
 const AppBarBlock = (props) => {
     const classes = useStyle();
 
     const logoutHandler = () => {
-        props.logout()
+        props.logout();
+        props.clearSocket();
+        props.clearMessages();
+        props.clearTopics();
     }
 
     return (
@@ -36,7 +42,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        logout: () => { dispatch(logoutActionCreator()) }
+        logout: () => { dispatch(logoutActionCreator()) },
+        clearSocket: () => { dispatch(disconnectSocketActionCreator()) },
+        clearMessages: () => { dispatch(onLogoutMessagesClearActionCreator()) },
+        clearTopics: () => { dispatch(onLogoutTopicsClearActionCreator()) },
     }
 }
 

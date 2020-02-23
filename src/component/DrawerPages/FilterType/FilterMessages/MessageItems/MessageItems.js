@@ -23,10 +23,10 @@ const MessageItems = (props) => {
 
     let lastMessageDate = null;
     return (
-        <List className={[classes.messagesList, 'messages'].join(' ')}>
+        <List className={[classes.messagesList, 'type-messages'].join(' ')}>
             <li
                 ref={(node) => { topRef = node }}
-                className={classes.topLiFetching}
+                className={[classes.topLiFetching, 'message'].join(' ')}
             >
                 {props.fetching ? <CircularProgress /> : null}
             </li>

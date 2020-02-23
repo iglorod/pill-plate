@@ -8,7 +8,7 @@ const DropFile = (props) => {
 
     let { getRootProps, getInputProps } = useDropzone({
         accept: props.imageDrop ? 'image/*' : null,
-        onDrop: acceptedFiles => props.dispatchFiles(acceptedFiles, props.imageDrop),
+        onDrop: acceptedFiles => { props.dispatchFiles(acceptedFiles, props.imageDrop) },
     });
 
     return (

@@ -34,7 +34,7 @@ const style = makeStyles(theme => ({
     messagesBlock: {
         height: '100%',
         display: 'flex',
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         flexDirection: 'column',
     },
     textArea: {
@@ -167,7 +167,7 @@ const style = makeStyles(theme => ({
         display: 'inline',
     },
     messageLiItem: {
-        paddingLeft: theme.spacing(6),
+        paddingLeft: theme.spacing(3),
         paddingRight: theme.spacing(3),
         cursor: 'pointer',
     },

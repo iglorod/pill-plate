@@ -5,9 +5,10 @@ import $ from 'jquery';
 import useStyles from '../styles';
 import MessageItems from './MessageItems/MessageItems';
 import EmptyMessage from './EmptyMessage/EmptyMessage';
+import LoadMessages from './LoadMessages/LoadMessages';
 
-const scrollToTopPosition = (topPosition, parent) => {
-    $(parent).animate({ scrollTop: topPosition }, 0)
+const scrollToTopPosition = (topPosition, parent, delay) => {
+    $(parent).animate({ scrollTop: topPosition }, delay);
 }
 
 const getTopPostion = (el) => {
@@ -21,6 +22,7 @@ const FilterMessages = (props) => {
     const [fetching, setFetching] = useState(false);
     const [, setAllowToFetch] = useState(false);
     const [, setSkip] = useState(0);
+    const [firstFetching, setFirstFetching] = useState(true);
 
     useEffect(() => {
         fetchFilterMessages(15).then(() => {
@@ -65,27 +67,30 @@ const FilterMessages = (props) => {
     }
 
     const firstFetchingScroll = () => {
-        let messages = document.querySelector(".messages")
-        let lastMessage = document.querySelector(".messages .message:last-of-type");
+        setFirstFetching(false);
+
+        let messages = document.querySelector(".type-messages")
+        let lastMessage = document.querySelector(".type-messages .message:last-of-type");
+
         if (lastMessage) {
-            scrollToTopPosition(getTopPostion(lastMessage), messages)
+            scrollToTopPosition(getTopPostion(lastMessage), messages, 500)
         }
 
         setAllowToFetch(true);
     }
 
     const prevFetchingScroll = (firstMessage) => {
-        const messages = document.querySelector(".messages");
+        const messages = document.querySelector(".type-messages");
         let newFirstMessageTopPosition = getTopPostion(firstMessage);
 
         if (firstMessage) {
-            scrollToTopPosition(newFirstMessageTopPosition, messages);
+            scrollToTopPosition(newFirstMessageTopPosition, messages, 0);
         }
     }
 
     const fetchPreviousMessages = () => {
         if (!getLastAllowToFetch() || getLastFetching()) return;
-        const firstMessage = document.querySelectorAll(".messages .message")[1];
+        const firstMessage = document.querySelectorAll(".type-messages .message")[1];
 
         setFetching(true);
         fetchFilterMessages(15).then(() => {
@@ -134,6 +139,7 @@ const FilterMessages = (props) => {
             fetchPreviousMessages={fetchPreviousMessages}
             fetching={fetching} />
     }
+    if (firstFetching) messages = <LoadMessages />
 
     return (
         <div className={classes.messagesBlock}>

@@ -39,6 +39,7 @@ const style = makeStyles(theme => ({
         width: '100%',
         padding: '10px 10px 5px',
         display: 'flex',
+        alignItems: 'center',
         flexDirection: 'column',
         justifyContent: 'space-around',
     },
@@ -90,10 +91,15 @@ const style = makeStyles(theme => ({
         top: '15px',
         right: '0',
         transition: 'all .3s',
-        "&:hover": {        
+        "&:hover": {
             background: 'none',
             color: '#000000',
         }
+    },
+    unreadedCount: {
+        position: 'absolute',
+        left: '20px',
+        bottom: '20px',
     }
 }));
 

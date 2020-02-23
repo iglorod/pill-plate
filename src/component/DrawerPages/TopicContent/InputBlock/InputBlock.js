@@ -24,10 +24,9 @@ const getFreqSmiles = () => {
 
 const addNewSmileToFreq = (freqSmiles, idEmoji) => {
     const freqSmilesCount = freqSmiles.length;
-
     freqSmiles = freqSmiles.filter(item => item !== idEmoji);
 
-    if (freqSmilesCount === freqSmiles.length) {
+    if (freqSmilesCount === freqSmiles.length && freqSmiles.length === 15) {
         freqSmiles.splice(freqSmiles.length - 1, 1);
     }
 
@@ -71,7 +70,7 @@ const InputBlock = (props) => {
     const addNewEmoji = (emoji) => {
         setTextAreaValue(prevState => prevState + emoji.native);
         focusInput();
-        setFreqSmiles(prevState => addNewSmileToFreq([...prevState], emoji.id));
+        setFreqSmiles(prevState => [...addNewSmileToFreq([...prevState], emoji.id)]);
     }
 
     const addFreqEmoji = (emoji) => {
@@ -102,8 +101,6 @@ const InputBlock = (props) => {
             sender: props.userId
         }
         const urlMatches = textAreaValue.match(/\b(http|https)?:\/\/\S+/gi) || [];
-
-        props.setAllowScrollToBtm(true);
 
         if (urlMatches.length === 0)
             props.sendTextMessage(messageData, props.socket, messageTypes.TEXT);

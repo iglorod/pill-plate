@@ -258,6 +258,20 @@ const style = makeStyles(theme => ({
     },
     filterChip: {
         boxShadow: theme.shadows[1],
+    },
+    notReadedDot: {
+        fontSize: '12px',
+        position: 'absolute',
+        left: '10px',
+        top: '50%',
+        transform: 'translateY(-50%)',
+        color: theme.palette.primary.dark,
+        margin: '0',
+    },
+    newMessagesBlock: {
+        textAlign: 'center',
+        color: 'grey',
+        paddingTop: '16px',
     }
 }));
 

@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import $ from 'jquery';
+import axios from 'axios';
 
 import useStyles from '../styles';
 import MessageItems from './MessageItems/MessageItems';
-import EmptyMessage from './EmptyMessage/EmptyMessage';
+import EmptyMessages from './EmptyMessages/EmptyMessages';
+import LoadMessages from './LoadMessages/LoadMessages';
 import { fetchMessagesAction } from '../../../../store/actions/messages';
 
-const scrollToTopPosition = (topPosition, parent) => {
-    $(parent).animate({ scrollTop: (topPosition) }, 0)
+const scrollToTopPosition = (topPosition, parent, delay = 0) => {
+    $(parent).animate({ scrollTop: topPosition }, delay)
 }
 
 const getTopPostion = (el) => {
@@ -25,25 +27,39 @@ const MessageBlock = (props) => {
     const [fetching, setFetching] = useState(false);
     const [, setAllowToFetch] = useState(false);
     const [, setSkip] = useState(0);
+    const [newMessagesLabelPosition, setNewMessagesLabelPosition] = useState(0);
+    const [firstFetching, setFirstFetching] = useState(true);
 
     useEffect(() => {
         if (props.currTopicId) {
-            loadMessagesHistory(15, true).then(() => {
-                firstFetchingScroll();
-            });
+            axios.post('http://localhost:4000/topic/messages/single/readers/' + props.currTopicId, { userId: props.userId })
+                .then(count => {
+                    setNewMessagesLabelPosition(count.data);
+
+                    let displayCount = count.data;
+                    displayCount += 5;
+                    if (displayCount < 15) displayCount += 15 - displayCount;    //prepend 5 messages to unreaded messages
+                    loadMessagesHistory(displayCount, true).then(() => {
+                        firstFetchingScroll();
+                    });
+                })
         }
     }, [props.currTopicId])
 
     useEffect(() => {
         if (props.savingMessages === true) savingMessageScroll();
         else {
+            setNewMessagesLabelPosition(0);
             props.changeProgress(0);
             setTimeout(() => savingMessageScroll(), 300);
         }
     }, [props.savingMessages])
 
     useEffect(() => {
-        if (props.recivingMessage === false) setTimeout(() => savingMessageScroll(), 300);
+        if (props.recivingMessage === false) {
+            setNewMessagesLabelPosition(0);
+            setTimeout(() => savingMessageScroll(), 300);
+        }
         else setSkip(prevState => prevState + 1);
     }, [props.recivingMessage])
 
@@ -75,11 +91,20 @@ const MessageBlock = (props) => {
     }
 
     const firstFetchingScroll = () => {
-        let messages = document.querySelector(".messages")
-        let lastMessage = document.querySelector(".messages .message:last-of-type");
+        setFirstFetching(false);
+
+        let messages = document.querySelector(".messages");
+        let message = document.querySelector(".messages .not-readed-message");
+        let goBack = 110;
+
+        if (!message) {
+            goBack = 0;
+            message = document.querySelector(".messages .message:last-of-type");
+        }
+        
         setTimeout(() => {
-            if (lastMessage) {
-                scrollToTopPosition(getTopPostion(lastMessage), messages);
+            if (message) {
+                scrollToTopPosition(getTopPostion(message) - goBack, messages, 300);
             }
 
             setAllowToFetch(true);
@@ -135,7 +160,7 @@ const MessageBlock = (props) => {
         })
     }
 
-    let messages = <EmptyMessage />
+    let messages = <EmptyMessages />
     if (topicIsExist(props.topic)) {
         messages = <MessageItems
             fetchPreviousMessages={fetchPreviousMessages}
@@ -143,8 +168,11 @@ const MessageBlock = (props) => {
             loadingFileProgress={props.loadingFileProgress}
             changeSelectedMessage={props.changeSelectedMessage}
             selectedMessagesId={props.selectedMessagesId}
-            filter={props.filter} />
+            filter={props.filter}
+            newMessagesLabelPosition={newMessagesLabelPosition} />
     }
+
+    if (firstFetching) messages = <LoadMessages />
 
     return (
         <div className={classes.messagesBlock}>

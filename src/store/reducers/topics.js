@@ -98,6 +98,10 @@ const reducer = (state = initialState, action) => {
             }
         }
 
+        case actionTypes.LOGOUT_TOPICS: {
+            return { ...initialState }
+        }
+
         default: return state;
     }
 }

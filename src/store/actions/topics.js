@@ -54,6 +54,12 @@ export const leaveTopicActionCreator = (topicId, socket) => {
     }
 }
 
+export const onLogoutTopicsClearActionCreator = () => {
+    return {
+        type: actionTypes.LOGOUT_TOPICS,
+    }    
+}
+
 export const getTopicsAction = (socket) => {
     return (dispatch, getState) => {
         dispatch(fetchingStartActionCreator());

@@ -98,8 +98,10 @@ const reducer = (state = initialState, action) => {
 
             const topicMessages = state.topics[topicId].messages.map(message => {
                 if (message._id === action.message._id) {
+                    message.wasReadedBy = [...action.message.wasReadedBy];
                     message.text = action.message.text;
                 }
+
                 return message;
             })
 
@@ -130,6 +132,10 @@ const reducer = (state = initialState, action) => {
                     }
                 }
             }
+        }
+
+        case actionTypes.LOGOUT_MESSAGES: {
+            return { ...initialState }
         }
 
         default: return state;

@@ -6,6 +6,7 @@ import MessageItem from './MessageItem/MessageItem';
 import useStyles from '../../styles';
 import { findDOMNode } from 'react-dom';
 import * as messageTypes from '../../../../../utility/message-types';
+import { readMessageAction } from '../../../../../store/actions/messages';
 
 const filterCheck = (message, filter) => {
     if (!filter.photos && !filter.links && !filter.videos && !filter.files) return true;
@@ -20,7 +21,7 @@ const filterCheck = (message, filter) => {
 
 const MessageItems = (props) => {
     const classes = useStyles();
-    
+
     let topRef = null;
     useEffect(() => {
         let observer = new IntersectionObserver(function (entries) {
@@ -33,29 +34,37 @@ const MessageItems = (props) => {
 
         observer.observe(findDOMNode(topRef));
     }, [])
+    
+    const firstNotReaded = (messageIndex, arrayLength) => {
+        const reverseMessageIndex = arrayLength - messageIndex;
+        return reverseMessageIndex === props.newMessagesLabelPosition && props.newMessagesLabelPosition !== 0;
+    }
+
+    const notReadedElement = (messageIndex, arrayLength) => {
+        return firstNotReaded(messageIndex, arrayLength)
+            ? <li className={[classes.newMessagesBlock, 'not-readed-message'].join(' ')}>New messages</li>
+            : null;
+    }
 
     let lastMessageDate = null;
+    const messagesCount = props.topics[props.currTopicId].messages.length;
     return (
         <List className={[classes.messagesList, 'messages'].join(' ')}>
-            <li
-                ref={(node) => { topRef = node }}
-                className={classes.topLiFetching}
-            >
-                {props.fetching ? <CircularProgress /> : null}
+            <li ref={(node) => { topRef = node }} className={classes.topLiFetching} >
+                {props.fetching ? <CircularProgress disableShrink /> : null}
             </li>
             {
                 props.topics[props.currTopicId].messages.map((item, index) => {
                     if (!filterCheck(item, props.filter)) return null;
-
                     const currentMessageDate = new Date(item.date * 1000).toLocaleDateString();
 
                     if (lastMessageDate !== currentMessageDate) {
                         lastMessageDate = currentMessageDate;
 
                         const shownTimeString = new Date(item.date * 1000).toDateString();
-
                         return (
                             <React.Fragment key={item._id}>
+                                {notReadedElement(index, messagesCount)}
                                 <li
                                     style={
                                         {
@@ -66,7 +75,10 @@ const MessageItems = (props) => {
                                     }>{shownTimeString}</li>
                                 <MessageItem
                                     message={item}
+                                    userId={props.userId}
+                                    addToReaded={props.addToReaded}
                                     selectedMessagesId={props.selectedMessagesId}
+                                    showAuthor={firstNotReaded(index, messagesCount)}
                                     changeSelectedMessage={props.changeSelectedMessage.bind(this, item._id)} />
                             </React.Fragment>
                         )
@@ -78,13 +90,18 @@ const MessageItems = (props) => {
                     ] : null;
 
                     return (
-                        <MessageItem
-                            key={item._id}
-                            message={item}
-                            prevType={prevType}
-                            prevAuthor={prevAuthor}
-                            selectedMessagesId={props.selectedMessagesId}
-                            changeSelectedMessage={props.changeSelectedMessage.bind(this, item._id)} />
+                        <React.Fragment key={item._id}>
+                            {notReadedElement(index, messagesCount)}
+                            <MessageItem
+                                message={item}
+                                userId={props.userId}
+                                addToReaded={props.addToReaded}
+                                prevType={prevType}
+                                prevAuthor={prevAuthor}
+                                selectedMessagesId={props.selectedMessagesId}
+                                showAuthor={firstNotReaded(index, messagesCount)}
+                                changeSelectedMessage={props.changeSelectedMessage.bind(this, item._id)} />
+                        </React.Fragment>
                     )
                 })
             }
@@ -100,11 +117,16 @@ const MessageItems = (props) => {
 const mapStateToProps = (state) => {
     return {
         topics: state.msg.topics,
-        fetching: state.msg.fetchingMessages,
         userId: state.auth.id,
         currTopicId: state.tpc.openedTopicId,
         savingMessages: state.msg.savingMessages,
     }
 }
 
-export default connect(mapStateToProps)(MessageItems);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addToReaded: (userId, messageId) => { dispatch(readMessageAction(userId, messageId)) }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MessageItems);
