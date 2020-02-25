@@ -78,7 +78,7 @@ export const signUpAction = (user) => {
 
         axios.post('/user/signup', user)
             .then(token => {
-                axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + token.data;
 
                 dispatch(signUpActionCreator(token));
                 dispatch(resetTokenTimer());
@@ -95,7 +95,7 @@ export const signInAction = (user, rememberData) => {
 
         axios.post('/user/signin', user)
             .then(token => {
-                axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + token.data;
 
                 dispatch(signInActionCreator(token, rememberData));
                 dispatch(resetTokenTimer());
@@ -135,7 +135,7 @@ export const refreshTokenAction = (token) => {
     return (dispatch, getState) => {
         axios.post('/user/refresh-token', token)
             .then(newToken => {
-                axios.defaults.headers.common['Authorization'] = 'Bearer ' + newToken;
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + newToken.data;
 
                 dispatch(refreshTokenActionCreator(newToken)); //refreshing token
 
