@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/pill.plate/static/css/main.d47b9a7d.chunk.css",
+    "main.js": "/pill.plate/static/js/main.3ece52a6.chunk.js",
+    "main.js.map": "/pill.plate/static/js/main.3ece52a6.chunk.js.map",
+    "runtime-main.js": "/pill.plate/static/js/runtime-main.17289622.js",
+    "runtime-main.js.map": "/pill.plate/static/js/runtime-main.17289622.js.map",
+    "static/css/2.59f4f2a6.chunk.css": "/pill.plate/static/css/2.59f4f2a6.chunk.css",
+    "static/js/2.ae6c3651.chunk.js": "/pill.plate/static/js/2.ae6c3651.chunk.js",
+    "static/js/2.ae6c3651.chunk.js.map": "/pill.plate/static/js/2.ae6c3651.chunk.js.map",
+    "index.html": "/pill.plate/index.html",
+    "precache-manifest.01ccf3117dfae922bf68a891cf68f6b3.js": "/pill.plate/precache-manifest.01ccf3117dfae922bf68a891cf68f6b3.js",
+    "service-worker.js": "/pill.plate/service-worker.js",
+    "static/css/2.59f4f2a6.chunk.css.map": "/pill.plate/static/css/2.59f4f2a6.chunk.css.map",
+    "static/css/main.d47b9a7d.chunk.css.map": "/pill.plate/static/css/main.d47b9a7d.chunk.css.map",
+    "static/js/2.ae6c3651.chunk.js.LICENSE": "/pill.plate/static/js/2.ae6c3651.chunk.js.LICENSE",
+    "static/media/idea.png": "/pill.plate/static/media/idea.9f6804c4.png",
+    "static/media/soon.png": "/pill.plate/static/media/soon.4608d02c.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.17289622.js",
+    "static/css/2.59f4f2a6.chunk.css",
+    "static/js/2.ae6c3651.chunk.js",
+    "static/css/main.d47b9a7d.chunk.css",
+    "static/js/main.3ece52a6.chunk.js"
+  ]
+}
