@@ -9,7 +9,7 @@ const reducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.CONNECT_SOCKET: {
             if (state.socket !== null) break;
-            const socket = io.connect('http://localhost:4000');
+            const socket = io.connect('https://pill-plate.herokuapp.com');
 
             return {
                 socket: socket,

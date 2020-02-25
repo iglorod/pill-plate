@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import $ from 'jquery';
-import axios from 'axios';
+import axios from '../../../../utility/axios-instance';
 
 import useStyles from '../styles';
 import MessageItems from './MessageItems/MessageItems';
@@ -32,7 +32,7 @@ const MessageBlock = (props) => {
 
     useEffect(() => {
         if (props.currTopicId) {
-            axios.post('http://localhost:4000/topic/messages/single/readers/' + props.currTopicId, { userId: props.userId })
+            axios.post('/topic/messages/single/readers/' + props.currTopicId, { userId: props.userId })
                 .then(count => {
                     setNewMessagesLabelPosition(count.data);
 
@@ -101,7 +101,7 @@ const MessageBlock = (props) => {
             goBack = 0;
             message = document.querySelector(".messages .message:last-of-type");
         }
-        
+
         setTimeout(() => {
             if (message) {
                 scrollToTopPosition(getTopPostion(message) - goBack, messages, 300);
@@ -131,6 +131,8 @@ const MessageBlock = (props) => {
     const fetchPreviousMessages = () => {
         if (!getLastAllowToFetch() || getLastFetching()) return;
         const firstMessage = document.querySelectorAll(".messages .message")[1];
+        if (!firstMessage) return;
+
         let oldFirstMessageTopPosition = getTopPostion(firstMessage);
 
         setFetching(true);

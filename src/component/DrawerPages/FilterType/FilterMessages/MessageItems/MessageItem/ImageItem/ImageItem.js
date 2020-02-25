@@ -11,7 +11,7 @@ const TextItem = (props) => {
         setOpenImage(prevState => !prevState);
     }
 
-    const IMAGE_PATH = 'http://localhost:4000/' + props.message.path;
+    const IMAGE_PATH = props.message.path;
 
     return (
         <React.Fragment>

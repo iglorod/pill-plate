@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core';
 import { ReactLink as Link } from '../../../../UI/Link/Link';
 import { withRouter } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../../../../../utility/axios-instance';
 
 import useStyles from '../../styles';
 import TopicMenu from './TopicMenu/TopicMenu';
@@ -18,7 +18,7 @@ const Topic = (props) => {
     const [unreadedCount, setUnreadedCount] = useState(0);
 
     useEffect(() => {
-        axios.post('http://localhost:4000/topic/messages/single/readers/' + props.data._id, { userId: props.userId })
+        axios.post('/topic/messages/single/readers/' + props.data._id, { userId: props.userId })
             .then(count => {
                 setUnreadedCount(count.data);
             })

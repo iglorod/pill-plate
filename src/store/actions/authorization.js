@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../../utility/axios-instance';
 
 import * as actionTypes from './actionTypes';
 
@@ -64,6 +64,8 @@ export const logoutActionCreator = () => {
 
 export const signInLocalAction = () => {
     return dispatch => {
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+        
         dispatch(signInLocalActionCreator());
 
         dispatch(resetTokenTimer());
@@ -74,8 +76,10 @@ export const signUpAction = (user) => {
     return dispatch => {
         dispatch(startActionCreator());
 
-        axios.post('http://localhost:4000/user/signup', user)
+        axios.post('/user/signup', user)
             .then(token => {
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+
                 dispatch(signUpActionCreator(token));
                 dispatch(resetTokenTimer());
             })
@@ -89,8 +93,10 @@ export const signInAction = (user, rememberData) => {
     return dispatch => {
         dispatch(startActionCreator());
 
-        axios.post('http://localhost:4000/user/signin', user)
+        axios.post('/user/signin', user)
             .then(token => {
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+
                 dispatch(signInActionCreator(token, rememberData));
                 dispatch(resetTokenTimer());
             })
@@ -127,8 +133,10 @@ export const resetTokenTimer = () => { //set token auto-refreshing
 
 export const refreshTokenAction = (token) => {
     return (dispatch, getState) => {
-        axios.post('http://localhost:4000/user/refresh-token', token)
+        axios.post('/user/refresh-token', token)
             .then(newToken => {
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + newToken;
+
                 dispatch(refreshTokenActionCreator(newToken)); //refreshing token
 
                 if (!getState().auth.id) dispatch(signInLocalAction()); //if user is not auth we try to login auto

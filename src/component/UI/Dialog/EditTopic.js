@@ -157,7 +157,6 @@ const EditTopic = (props) => {
             />
         );
 
-        console.log(stateInputs[key].isValid);
         fieldsIsValid = stateInputs[key].isValid && fieldsIsValid;
     }
 

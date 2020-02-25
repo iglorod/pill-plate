@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from '../../../../utility/axios-instance';
 import { Grid, Button, Typography, Link, TextField, CircularProgress } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import { connect } from 'react-redux';
@@ -71,7 +71,7 @@ const SignUpForm = (props) => {
                 email: stateInputs.email.value
             }
 
-            axios.post('http://localhost:4000/user/email-exists', data)
+            axios.post('/user/email-exists', data)
                 .then(response => {
 
                     if (response.data) {

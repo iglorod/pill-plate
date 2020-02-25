@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from '../../../../utility/axios-instance';
 import $ from 'jquery';
 
 import useStyles from '../styles';
@@ -106,8 +106,7 @@ const FilterMessages = (props) => {
                 + '&skip=' + getSkip()
                 + '&limit=' + limit;
 
-            axios.defaults.headers.common['Authorization'] = 'Bearer ' + props.token;
-            axios.get('http://localhost:4000/topic/messages/filter/' + props.idUser + queryChunks)
+            axios.get('/topic/messages/filter/' + props.idUser + queryChunks)
                 .then(messages => {
                     updateFilterMessages(messages.data.reverse(), resolve);
                 })

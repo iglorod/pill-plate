@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../../utility/axios-instance';
 
 import * as actionTypes from '../actions/actionTypes';
 
@@ -49,7 +49,7 @@ export const setCurrentTopicActionCreator = (topicId) => {
 export const leaveTopicActionCreator = (topicId, socket) => {
     return {
         type: actionTypes.DELETE_TOPIC,
-        topicId: topicId, 
+        topicId: topicId,
         socket: socket,
     }
 }
@@ -57,7 +57,7 @@ export const leaveTopicActionCreator = (topicId, socket) => {
 export const onLogoutTopicsClearActionCreator = () => {
     return {
         type: actionTypes.LOGOUT_TOPICS,
-    }    
+    }
 }
 
 export const getTopicsAction = (socket) => {
@@ -65,10 +65,8 @@ export const getTopicsAction = (socket) => {
         dispatch(fetchingStartActionCreator());
 
         const userId = getState().auth.id;
-        const token = getState().auth.token;
 
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-        axios.get('http://localhost:4000/topics/' + userId)
+        axios.get('/topics/' + userId)
             .then(topics => {
                 dispatch(getTopicsActionCreator(topics.data, socket));
             })
@@ -78,8 +76,7 @@ export const getTopicsAction = (socket) => {
 
 export const createTopicAction = (topic, socket, handleOpenSnackbar) => {
     return (dispatch, getState) => {
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + getState().auth.token;
-        axios.post('http://localhost:4000/topics', topic)
+        axios.post('/topics', topic)
             .then(topic => {
                 dispatch(createTopicActionCreator(topic.data, socket));
                 handleOpenSnackbar();
@@ -95,8 +92,7 @@ export const editTopicAction = (topic) => {
             note: topic.note,
         }
 
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + getState().auth.token;
-        axios.patch('http://localhost:4000/topics/single/' + topic._id, updatedData)
+        axios.patch('/topics/single/' + topic._id, updatedData)
             .catch(error => dispatch(errorActionCreator()))
     }
 }
@@ -105,8 +101,7 @@ export const leaveTopicAction = (topicId, handleOpenSnackbar, socket) => {
     return (dispatch, getState) => {
         const userId = getState().auth.id
 
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + getState().auth.token;
-        axios.post('http://localhost:4000/topics/single/leave/' + topicId, { userId })
+        axios.post('/topics/single/leave/' + topicId, { userId })
             .then(res => {
                 dispatch(leaveTopicActionCreator(topicId, socket));
                 handleOpenSnackbar();

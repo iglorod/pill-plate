@@ -9,7 +9,7 @@ import {
     TextField,
     Snackbar
 } from '@material-ui/core';
-import axios from 'axios';
+import axios from '../../../utility/axios-instance';
 
 import useStyles from './style';
 import { validation } from '../../../utility/validation';
@@ -87,7 +87,7 @@ const ShareTopic = (props) => {
     }
 
     const startShareTopic = (topicId, newMemberData) => {
-        axios.patch('http://localhost:4000/topics/single/share/' + topicId, newMemberData)
+        axios.patch('/topics/single/share/' + topicId, newMemberData)
             .then(response => {
                 setOpenSnackbar(true);
                 setSnackbarMessage('Topic shared successfully');

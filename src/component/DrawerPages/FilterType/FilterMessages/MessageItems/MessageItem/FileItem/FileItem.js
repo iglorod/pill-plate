@@ -6,13 +6,13 @@ import useStyles from '../../../../styles';
 import MessageSceleton from '../MessageSceleton/MessageSceleton';
 
 const getFileName = (path) => {
-    const pathContains = path.split('\\');
+    const pathContains = path.split('/');
     return pathContains[pathContains.length - 1].slice(13);
 }
 
 const TextItem = (props) => {
     const classes = useStyles();
-    const FILE_PATH = 'http://localhost:4000/' + props.message.path;
+    const FILE_PATH = props.message.path;
 
     return (
         <MessageSceleton

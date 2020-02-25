@@ -16,7 +16,7 @@ const TextItem = (props) => {
                         }}
                         onClick={(event) => event.stopPropagation()}
                         controls>
-                        <source src={'http://localhost:4000/' + props.message.path} type="video/mp4" />
+                        <source src={props.message.path} type="video/mp4" />
                     </video>
                 </div>
             }

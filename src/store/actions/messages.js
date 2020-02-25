@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../../utility/axios-instance';
 
 import * as actionTypes from '../actions/actionTypes';
 import * as fileTypeCheck from '../../utility/filetype-check';
@@ -93,7 +93,7 @@ export const sendTextMessageAction = (message, socket, messageType) => {
 
         const topicId = getState().tpc.openedTopicId;
 
-        axios.post('http://localhost:4000/topic/messages/text/' + topicId, messageData)
+        axios.post('/topic/messages/text/' + topicId, messageData)
             .then(message => {
                 socket.emit('save-message', topicId, message.data);
             })
@@ -131,7 +131,7 @@ export const sendFileMessageAction = (message, socket, changeProgress) => {
 
         const topicId = getState().tpc.openedTopicId;
 
-        axios.post('http://localhost:4000/topic/messages/' + fileType + '/' + topicId, formData, {
+        axios.post('/topic/messages/' + fileType + '/' + topicId, formData, {
             onUploadProgress: progressEvent => {
                 const progress = Math.round(progressEvent.loaded / progressEvent.total * 100);
                 changeProgress(progress);
@@ -153,7 +153,7 @@ export const fetchMessagesAction = (data) => {
 
         const limitations = '?skip=' + data.skip + '&limit=' + data.limit;
 
-        axios.get('http://localhost:4000/topic/messages/' + data.currTopicId + limitations)
+        axios.get('/topic/messages/' + data.currTopicId + limitations)
             .then(messages => {
                 dispatch(finishMessageFetchActionCreator());
 
@@ -173,7 +173,7 @@ export const editMessageAction = (message, socket, editableMessageId) => {
     return (dispatch, getState) => {
         const topicId = getState().tpc.openedTopicId;
 
-        axios.patch('http://localhost:4000/topic/messages/single/text/' + editableMessageId, message)
+        axios.patch('/topic/messages/single/text/' + editableMessageId, message)
             .then(message => {
                 socket.emit('edit-message', topicId, message.data);
             })
@@ -187,7 +187,7 @@ export const removeMessageAction = (messageId, socket) => {
     return (dispatch, getState) => {
         const topicId = getState().tpc.openedTopicId;
 
-        axios.delete('http://localhost:4000/topic/messages/single/' + messageId)
+        axios.delete('/topic/messages/single/' + messageId)
             .then(message => {
                 socket.emit('delete-message', topicId, message.data);
             })
@@ -207,7 +207,7 @@ export const saveMessageAction = (message) => {
 
 export const readMessageAction = (userId, messageId) => {
     return dispatch => {
-        axios.patch('http://localhost:4000/topic/messages/single/readers/' + messageId, { wasReadedBy: userId })
+        axios.patch('/topic/messages/single/readers/' + messageId, { wasReadedBy: userId })
             .then(message => {
                 dispatch(editRecivedMessageActionCreator(message.data));
             })
