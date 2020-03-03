@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/pill-plate/static/css/main.d47b9a7d.chunk.css",
-    "main.js": "/pill-plate/static/js/main.a565dce0.chunk.js",
-    "main.js.map": "/pill-plate/static/js/main.a565dce0.chunk.js.map",
+    "main.js": "/pill-plate/static/js/main.305c7326.chunk.js",
+    "main.js.map": "/pill-plate/static/js/main.305c7326.chunk.js.map",
     "runtime-main.js": "/pill-plate/static/js/runtime-main.138d54e7.js",
     "runtime-main.js.map": "/pill-plate/static/js/runtime-main.138d54e7.js.map",
     "static/css/2.59f4f2a6.chunk.css": "/pill-plate/static/css/2.59f4f2a6.chunk.css",
     "static/js/2.c876553f.chunk.js": "/pill-plate/static/js/2.c876553f.chunk.js",
     "static/js/2.c876553f.chunk.js.map": "/pill-plate/static/js/2.c876553f.chunk.js.map",
     "index.html": "/pill-plate/index.html",
-    "precache-manifest.95cc4beac20b77d5baf1a1c936c21b68.js": "/pill-plate/precache-manifest.95cc4beac20b77d5baf1a1c936c21b68.js",
+    "precache-manifest.cecc2f28ae5f15bbbdb2c678e274dd21.js": "/pill-plate/precache-manifest.cecc2f28ae5f15bbbdb2c678e274dd21.js",
     "service-worker.js": "/pill-plate/service-worker.js",
     "static/css/2.59f4f2a6.chunk.css.map": "/pill-plate/static/css/2.59f4f2a6.chunk.css.map",
     "static/css/main.d47b9a7d.chunk.css.map": "/pill-plate/static/css/main.d47b9a7d.chunk.css.map",
@@ -22,6 +22,6 @@
     "static/css/2.59f4f2a6.chunk.css",
     "static/js/2.c876553f.chunk.js",
     "static/css/main.d47b9a7d.chunk.css",
-    "static/js/main.a565dce0.chunk.js"
+    "static/js/main.305c7326.chunk.js"
   ]
 }

@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/pill-plate/precache-manifest.95cc4beac20b77d5baf1a1c936c21b68.js"
+  "/pill-plate/precache-manifest.cecc2f28ae5f15bbbdb2c678e274dd21.js"
 );
 
 self.addEventListener('message', (event) => {
