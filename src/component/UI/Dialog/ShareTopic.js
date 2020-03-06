@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import axios from '../../../utility/axios-instance';
 
-import useStyles from './style';
+import useStyles from './styles';
 import { validation } from '../../../utility/validation';
 
 const Transition = React.forwardRef(function Transition(props, ref) {

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Drawer, Hidden } from '@material-ui/core';
 
-import useStyle from '../style';
+import useStyles from '../styles';
 import DrawerItems from './DrawerItems/DriwerItems';
 
 const DrawerBlock = (props) => {
-    const classes = useStyle();
+    const classes = useStyles();
     const { container } = props;
 
     return (

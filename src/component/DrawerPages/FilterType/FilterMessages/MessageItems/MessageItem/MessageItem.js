@@ -5,9 +5,7 @@ import {
     Avatar,
     ListItemSecondaryAction,
     Typography,
-    ListItemIcon
 } from '@material-ui/core';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 import useStyles from '../../../styles';
 import * as messageTypes from '../../../../../../utility/message-types';

@@ -8,7 +8,7 @@ import AppBarBlock from './AppBarBlock/AppBarBlock';
 import { finishLoadingActionCreator } from '../../store/actions/authorization';
 import { connectSocketActionCreator } from '../../store/actions/socket';
 import AnimatedSwitch from '../UI/AnimatedSwitch/AnimatedSwitch';
-import useStyle from './style';
+import useStyles from './styles';
 
 //pages components
 import Topics from '../DrawerPages/Topics/Topics';
@@ -23,7 +23,7 @@ const AppSceleton = (props) => {
         props.connectSocket();
     }, [])
 
-    const classes = useStyle();
+    const classes = useStyles();
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);

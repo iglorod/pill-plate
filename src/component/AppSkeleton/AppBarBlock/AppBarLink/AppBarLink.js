@@ -1,11 +1,11 @@
 import React from 'react';
 import { IconButton, Typography, Link } from '@material-ui/core';
 
-import useStyle from '../../style';
+import useStyles from '../../styles';
 import { ReactLink } from '../../../UI/Link/Link';
 
 const AppBarLink = (props) => {
-    const classes = useStyle();
+    const classes = useStyles();
 
     return (
         <IconButton

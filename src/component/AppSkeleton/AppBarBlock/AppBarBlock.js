@@ -3,7 +3,7 @@ import { AppBar, Toolbar } from '@material-ui/core';
 import { ExitToApp, MailOutline } from '@material-ui/icons';
 import { connect } from 'react-redux';
 
-import useStyle from '../style';
+import useStyles from '../styles';
 import AppBarLink from './AppBarLink/AppBarLink';
 import DrawerButton from './MenuButton/MenuButton';
 import { logoutActionCreator } from '../../../store/actions/authorization';
@@ -12,7 +12,7 @@ import { disconnectSocketActionCreator } from '../../../store/actions/socket';
 import { onLogoutTopicsClearActionCreator } from '../../../store/actions/topics';
 
 const AppBarBlock = (props) => {
-    const classes = useStyle();
+    const classes = useStyles();
 
     const logoutHandler = () => {
         props.logout();

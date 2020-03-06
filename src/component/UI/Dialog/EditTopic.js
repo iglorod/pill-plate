@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 
-import useStyles from './style';
+import useStyles from './styles';
 import { validation } from '../../../utility/validation';
 import { editTopicAction, editTopicActionCreator } from '../../../store/actions/topics';
 

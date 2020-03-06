@@ -1,11 +1,11 @@
 import React from 'react';
 
 import Logo from '../../../../../assets/images/logo.png';
-import useStyle from '../../../style';
+import useStyles from '../../../styles';
 import cssClasses from './DrawerLogo.module.css';
 
 const DrawerLogo = () => {
-    const classes = useStyle();
+    const classes = useStyles();
 
     return (
         <div className={classes.toolbar}>

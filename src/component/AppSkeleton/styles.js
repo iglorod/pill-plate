@@ -26,9 +26,9 @@ const style = makeStyles(theme => ({
         },
     },
     appBarButton: {
-        borderRadius: 0,
-        padding: '0px',
-        margin: '0 5px'
+        borderRadius: '0 !important',
+        padding: '0px !important',
+        margin: '0 5px !important'
     },
     appBarLink: {
         display: 'inherit',
@@ -45,20 +45,20 @@ const style = makeStyles(theme => ({
         flexGrow: 1,
     },
     activeLink: {
-        background: 'white',
+        background: 'white !important',
         boxShadow: theme.shadows[3],
         fontWeight: '600',
-        transition: '.2s all',
+        transition: '.2s all !important',
         "&:hover": {
             background: 'white !important',
             boxShadow: theme.shadows[5],
         }
     },
     nestedLink: {
-        paddingLeft: theme.spacing(4),
+        paddingLeft: theme.spacing(4) + 'px !important',
     },
     nestedLinkActive: {
-        background: 'rgba(0, 0, 0, 0.08)',
+        background: 'rgba(0, 0, 0, 0.08) !important',
     }
 }));
 

@@ -2,10 +2,10 @@ import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 
-import useStyle from '../../style';
+import useStyles from '../../styles';
 
 const DrawerButton = (props) => {
-    const classes = useStyle();
+    const classes = useStyles();
     return (
         <IconButton
             color="inherit"
