@@ -7,8 +7,12 @@ import MessageItems from './MessageItems/MessageItems';
 import EmptyMessage from './EmptyMessage/EmptyMessage';
 import LoadMessages from './LoadMessages/LoadMessages';
 
-const scrollToTopPosition = (topPosition, parent, delay) => {
-    $(parent).animate({ scrollTop: topPosition }, delay);
+const scrollToTopPosition = (topPosition, parent, delay = 0) => {
+    return new Promise((resolve, reject) => {
+        $(parent).animate({ scrollTop: topPosition }, delay, () => {
+            resolve();
+        });
+    });
 }
 
 const getTopPostion = (el) => {
@@ -70,32 +74,39 @@ const FilterMessages = (props) => {
         setFirstFetching(false);
 
         let messages = document.querySelector(".type-messages")
-        let lastMessage = document.querySelector(".type-messages .message:last-of-type");
+        let lastMessage = document.querySelector(".type-messages .message:last-child");
 
         if (lastMessage) {
-            scrollToTopPosition(getTopPostion(lastMessage), messages, 500)
+            scrollToTopPosition(getTopPostion(lastMessage), messages, 300)
+                .then(() => setAllowToFetch(true));
+        } else {
+            setAllowToFetch(true);
         }
-
-        setAllowToFetch(true);
     }
 
-    const prevFetchingScroll = (firstMessage) => {
+    const prevFetchingScroll = (firstMessage, oldFirstMessageTopPosition) => {
         const messages = document.querySelector(".type-messages");
         let newFirstMessageTopPosition = getTopPostion(firstMessage);
 
         if (firstMessage) {
-            scrollToTopPosition(newFirstMessageTopPosition, messages, 0);
+            scrollToTopPosition(newFirstMessageTopPosition - oldFirstMessageTopPosition, messages)
+                .then(() => setFetching(false))
+        } else {
+            setFetching(false);
         }
     }
 
     const fetchPreviousMessages = () => {
         if (!getLastAllowToFetch() || getLastFetching()) return;
         const firstMessage = document.querySelectorAll(".type-messages .message")[1];
+        if (!firstMessage) return;
 
+        const oldFirstMessageTopPosition = getTopPostion(firstMessage);
+        
         setFetching(true);
         fetchFilterMessages(15).then(() => {
-            prevFetchingScroll(firstMessage);
-            setFetching(false);
+            if (!firstMessage) return;
+            prevFetchingScroll(firstMessage, oldFirstMessageTopPosition);
         });
     }
 

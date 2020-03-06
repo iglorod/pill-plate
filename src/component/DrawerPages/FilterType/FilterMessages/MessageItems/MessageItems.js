@@ -1,35 +1,34 @@
 import React, { useEffect } from 'react';
 import { List, CircularProgress } from '@material-ui/core';
+import VisibilitySensor from 'react-visibility-sensor';
 
 import MessageItem from './MessageItem/MessageItem';
 import useStyles from '../../styles';
-import { findDOMNode } from 'react-dom';
 
 const MessageItems = (props) => {
     const classes = useStyles();
 
-    let topRef = null;
-    useEffect(() => {
-        let observer = new IntersectionObserver(function (entries) {
-            if (entries[0].isIntersecting === true) {
-                if (!props.fetching) {
-                    props.fetchPreviousMessages();
-                }
-            }
-        }, { threshold: [1] });
+    const loadPrevMessages = (isVisible = true) => {
+        if (!props.fetching && isVisible) {
+            props.fetchPreviousMessages();
+        }
+    }
 
-        observer.observe(findDOMNode(topRef));
+    useEffect(() => {
+        loadPrevMessages();
     }, [])
 
     let lastMessageDate = null;
     return (
         <List className={[classes.messagesList, 'type-messages'].join(' ')}>
-            <li
-                ref={(node) => { topRef = node }}
-                className={[classes.topLiFetching, 'message'].join(' ')}
-            >
-                {props.fetching ? <CircularProgress /> : null}
-            </li>
+            <VisibilitySensor
+                onChange={(isVisible) => loadPrevMessages(isVisible)}
+                offset={{ top: 10 }}
+                delayedCall={true} >
+                <li className={classes.topLiFetching} >
+                    {props.fetching ? <CircularProgress disableShrink /> : null}
+                </li>
+            </VisibilitySensor>
             {
                 props.filterMessages.map((item, index) => {
                     const currentMessageDate = new Date(item.date * 1000).toLocaleDateString();

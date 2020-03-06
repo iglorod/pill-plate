@@ -10,7 +10,11 @@ import LoadMessages from './LoadMessages/LoadMessages';
 import { fetchMessagesAction } from '../../../../store/actions/messages';
 
 const scrollToTopPosition = (topPosition, parent, delay = 0) => {
-    $(parent).animate({ scrollTop: topPosition }, delay)
+    return new Promise((resolve, reject) => {
+        $(parent).animate({ scrollTop: topPosition }, delay, () => {
+            resolve();
+        });
+    });
 }
 
 const getTopPostion = (el) => {
@@ -104,10 +108,11 @@ const MessageBlock = (props) => {
 
         setTimeout(() => {
             if (message) {
-                scrollToTopPosition(getTopPostion(message) - goBack, messages, 300);
+                scrollToTopPosition(getTopPostion(message) - goBack, messages, 300)
+                    .then(() => setAllowToFetch(true));
+            } else {
+                setAllowToFetch(true);
             }
-
-            setAllowToFetch(true);
         }, 500)
     }
 
@@ -123,9 +128,11 @@ const MessageBlock = (props) => {
         let newFirstMessageTopPosition = getTopPostion(firstMessage);
 
         if (firstMessage) {
-            scrollToTopPosition(newFirstMessageTopPosition - oldFirstMessageTopPosition, messages);
+            scrollToTopPosition(newFirstMessageTopPosition - oldFirstMessageTopPosition, messages)
+                .then(() => setFetching(false));
+        } else {
+            setFetching(false);
         }
-        setFetching(false);
     }
 
     const fetchPreviousMessages = () => {
@@ -133,7 +140,7 @@ const MessageBlock = (props) => {
         const firstMessage = document.querySelectorAll(".messages .message")[1];
         if (!firstMessage) return;
 
-        let oldFirstMessageTopPosition = getTopPostion(firstMessage);
+        const oldFirstMessageTopPosition = getTopPostion(firstMessage);
 
         setFetching(true);
         loadMessagesHistory(15).then(() => {

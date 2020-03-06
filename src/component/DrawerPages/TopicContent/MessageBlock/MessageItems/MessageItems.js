@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { List, CircularProgress, LinearProgress } from '@material-ui/core';
 import { connect } from 'react-redux';
+import VisibilitySensor from 'react-visibility-sensor';
 
 import MessageItem from './MessageItem/MessageItem';
 import useStyles from '../../styles';
-import { findDOMNode } from 'react-dom';
 import * as messageTypes from '../../../../../utility/message-types';
 import { readMessageAction } from '../../../../../store/actions/messages';
 
@@ -22,19 +22,16 @@ const filterCheck = (message, filter) => {
 const MessageItems = (props) => {
     const classes = useStyles();
 
-    let topRef = null;
-    useEffect(() => {
-        let observer = new IntersectionObserver(function (entries) {
-            if (entries[0].isIntersecting === true) {
-                if (!props.fetching) {
-                    props.fetchPreviousMessages();
-                }
-            }
-        }, { threshold: [1] });
+    const loadPrevMessages = (isVisible = true) => {
+        if (!props.fetching && isVisible) {
+            props.fetchPreviousMessages();
+        }
+    }
 
-        observer.observe(findDOMNode(topRef));
+    useEffect(() => {
+        loadPrevMessages();
     }, [])
-    
+
     const firstNotReaded = (messageIndex, arrayLength) => {
         const reverseMessageIndex = arrayLength - messageIndex;
         return reverseMessageIndex === props.newMessagesLabelPosition && props.newMessagesLabelPosition !== 0;
@@ -50,9 +47,14 @@ const MessageItems = (props) => {
     const messagesCount = props.topics[props.currTopicId].messages.length;
     return (
         <List className={[classes.messagesList, 'messages'].join(' ')}>
-            <li ref={(node) => { topRef = node }} className={classes.topLiFetching} >
-                {props.fetching ? <CircularProgress disableShrink /> : null}
-            </li>
+            <VisibilitySensor
+                onChange={(isVisible) => loadPrevMessages(isVisible) }
+                offset={{ top: 120 }}
+                delayedCall={true} >
+                <li className={classes.topLiFetching} >
+                    {props.fetching ? <CircularProgress disableShrink /> : null}
+                </li>
+            </VisibilitySensor>
             {
                 props.topics[props.currTopicId].messages.map((item, index) => {
                     if (!filterCheck(item, props.filter)) return null;
