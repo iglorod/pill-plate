@@ -1,27 +1,28 @@
 {
   "files": {
-    "main.css": "/pill-plate/static/css/main.d47b9a7d.chunk.css",
-    "main.js": "/pill-plate/static/js/main.af0527f2.chunk.js",
-    "main.js.map": "/pill-plate/static/js/main.af0527f2.chunk.js.map",
+    "main.css": "/pill-plate/static/css/main.05a43e10.chunk.css",
+    "main.js": "/pill-plate/static/js/main.0b2341eb.chunk.js",
+    "main.js.map": "/pill-plate/static/js/main.0b2341eb.chunk.js.map",
     "runtime-main.js": "/pill-plate/static/js/runtime-main.138d54e7.js",
     "runtime-main.js.map": "/pill-plate/static/js/runtime-main.138d54e7.js.map",
     "static/css/2.59f4f2a6.chunk.css": "/pill-plate/static/css/2.59f4f2a6.chunk.css",
-    "static/js/2.59836d66.chunk.js": "/pill-plate/static/js/2.59836d66.chunk.js",
-    "static/js/2.59836d66.chunk.js.map": "/pill-plate/static/js/2.59836d66.chunk.js.map",
+    "static/js/2.c83c690e.chunk.js": "/pill-plate/static/js/2.c83c690e.chunk.js",
+    "static/js/2.c83c690e.chunk.js.map": "/pill-plate/static/js/2.c83c690e.chunk.js.map",
     "index.html": "/pill-plate/index.html",
-    "precache-manifest.9db0b34d5033c93a34f5991f1ae14ee4.js": "/pill-plate/precache-manifest.9db0b34d5033c93a34f5991f1ae14ee4.js",
+    "precache-manifest.592f75a6099af546c473787ef761f3a6.js": "/pill-plate/precache-manifest.592f75a6099af546c473787ef761f3a6.js",
     "service-worker.js": "/pill-plate/service-worker.js",
     "static/css/2.59f4f2a6.chunk.css.map": "/pill-plate/static/css/2.59f4f2a6.chunk.css.map",
-    "static/css/main.d47b9a7d.chunk.css.map": "/pill-plate/static/css/main.d47b9a7d.chunk.css.map",
-    "static/js/2.59836d66.chunk.js.LICENSE": "/pill-plate/static/js/2.59836d66.chunk.js.LICENSE",
+    "static/css/main.05a43e10.chunk.css.map": "/pill-plate/static/css/main.05a43e10.chunk.css.map",
+    "static/js/2.c83c690e.chunk.js.LICENSE": "/pill-plate/static/js/2.c83c690e.chunk.js.LICENSE",
+    "static/media/CardImage.png": "/pill-plate/static/media/CardImage.fd386e2d.png",
     "static/media/idea.png": "/pill-plate/static/media/idea.9f6804c4.png",
     "static/media/soon.png": "/pill-plate/static/media/soon.4608d02c.png"
   },
   "entrypoints": [
     "static/js/runtime-main.138d54e7.js",
     "static/css/2.59f4f2a6.chunk.css",
-    "static/js/2.59836d66.chunk.js",
-    "static/css/main.d47b9a7d.chunk.css",
-    "static/js/main.af0527f2.chunk.js"
+    "static/js/2.c83c690e.chunk.js",
+    "static/css/main.05a43e10.chunk.css",
+    "static/js/main.0b2341eb.chunk.js"
   ]
 }
