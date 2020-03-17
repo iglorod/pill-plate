@@ -23,8 +23,9 @@ const Layout = (props) => {
       } else {
         props.signInByLocalData();
       }
-    }
+    } else console.log('here');
   }, [])
+
 
   if (props.userId) {
     return (

@@ -34,6 +34,12 @@ const style = makeStyles(theme => ({
     messagesBlock: {
         height: '100%',
         display: 'flex',
+        justifyContent: 'flex-end',
+        flexDirection: 'column',
+    },
+    emptyMessagesBlock: {
+        height: '100%',
+        display: 'flex',
         justifyContent: 'center',
         flexDirection: 'column',
     },

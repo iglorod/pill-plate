@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CssBaseline } from '@material-ui/core';
-import { Route } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import DrawerBlock from './DrawerBlock/DrawerBlock';
@@ -21,6 +21,7 @@ const AppSceleton = (props) => {
     useEffect(() => {
         props.finishLoading();
         props.connectSocket();
+        props.history.push('/pulp/topics');
     }, [])
 
     const classes = useStyles();
@@ -54,4 +55,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(AppSceleton);
+export default connect(null, mapDispatchToProps)(withRouter(AppSceleton));

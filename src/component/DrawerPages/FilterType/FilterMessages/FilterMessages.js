@@ -152,7 +152,7 @@ const FilterMessages = (props) => {
     if (firstFetching) messages = <LoadMessages />
 
     return (
-        <div className={classes.messagesBlock}>
+        <div className={filterMessages.length > 0 ? classes.messagesBlock : classes.emptyMessagesBlock}>
             {messages}
         </div>
     )

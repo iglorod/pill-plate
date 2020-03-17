@@ -100,6 +100,30 @@ const style = makeStyles(theme => ({
         position: 'absolute',
         left: '20px',
         bottom: '20px',
+    },
+    topicsNotFoundImg: {
+        maxWidth: '100%',
+        maxHeight: '95%',
+        display: 'block',
+        margin: 'auto',
+    },
+    topicsNotFoundNote: {
+        width: '100%',
+        maxHeight: '100%',
+        margin: '-24px',
+        position: 'absolute',
+        textAlign: 'center',
+        '& p:first-child': {
+            fontSize: '30px',
+            color: 'grey',
+            fontFamily: '"Nunito", sans-serif',
+            marginBottom: '0',
+        },
+        '& p:last-child': {
+            fontSize: '18px',
+            color: 'lightgray',
+            fontFamily: '"Nunito", sans-serif',
+        },
     }
 }));
 

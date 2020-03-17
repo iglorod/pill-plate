@@ -13,6 +13,7 @@ import {
     editRecivedMessageActionCreator,
     removeRecivedMessageActionCreator
 } from '../../../../store/actions/messages';
+import TopicsNotFound from './TopicsNotFound/TopicsNotFound.js';
 
 const TopicsList = (props) => {
     const classes = useStyles();
@@ -61,29 +62,37 @@ const TopicsList = (props) => {
         setSelectedTopicData(null);
     }
 
+    let content = <TopicsNotFound />;
+
+    if (props.topics.length) {
+        content = (
+            <Grid container spacing={3} className={classes.gridConatainer}>
+                {
+                    props.topics.map((item, index) => {
+                        return (
+                            <Topic
+                                key={index}
+                                data={item}
+                                delay={index}
+                                userId={props.userId}
+                                newUnreadMessage={newUnreadMessage}
+                                edtiDialogOpen={edtiDialogOpen.bind(this, item)}
+                                shareDialogOpen={shareDialogOpen.bind(this, item)}
+                            />
+                        )
+                    })
+                }
+            </Grid>
+        )
+    }
+
     return (
         <React.Fragment>
             <EditTopicDialog open={editTopicDialogOpen} handleClose={dialogClose} topic={selectedTopicData} />
             <ShareTopicDialog open={shareTopicDialogOpen} handleClose={dialogClose} topic={selectedTopicData} />
 
             <div className={classes.root}>
-                <Grid container spacing={3} className={classes.gridConatainer}>
-                    {
-                        props.topics.map((item, index) => {
-                            return (
-                                <Topic
-                                    key={index}
-                                    data={item}
-                                    delay={index}
-                                    userId={props.userId}
-                                    newUnreadMessage={newUnreadMessage}
-                                    edtiDialogOpen={edtiDialogOpen.bind(this, item)}
-                                    shareDialogOpen={shareDialogOpen.bind(this, item)}
-                                />
-                            )
-                        })
-                    }
-                </Grid>
+                {content}
             </div>
         </React.Fragment >
     )

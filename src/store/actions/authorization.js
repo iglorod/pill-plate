@@ -65,9 +65,8 @@ export const logoutActionCreator = () => {
 export const signInLocalAction = () => {
     return dispatch => {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
-        
-        dispatch(signInLocalActionCreator());
 
+        dispatch(signInLocalActionCreator())
         dispatch(resetTokenTimer());
     }
 }
