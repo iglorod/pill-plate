@@ -97,7 +97,7 @@ const style = makeStyles(theme => ({
         }
     },
     unreadedCount: {
-        position: 'absolute',
+        position: 'absolute !important',
         left: '20px',
         bottom: '20px',
     },
