@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "9288ffd1b4891573c327980822e15fa2",
+    "revision": "ce9c77059cea1a4053013c4d30353dd2",
     "url": "/pill-plate/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/pill-plate/static/css/2.59f4f2a6.chunk.css"
   },
   {
-    "revision": "3ae1cd1648510536537a",
+    "revision": "7389ba8c295c5a4dfe99",
     "url": "/pill-plate/static/css/main.05a43e10.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/pill-plate/static/js/2.c83c690e.chunk.js.LICENSE"
   },
   {
-    "revision": "3ae1cd1648510536537a",
-    "url": "/pill-plate/static/js/main.0b2341eb.chunk.js"
+    "revision": "7389ba8c295c5a4dfe99",
+    "url": "/pill-plate/static/js/main.169e666b.chunk.js"
   },
   {
     "revision": "5f5fcb096eb974d8fcf1",
